@@ -1,0 +1,2 @@
+# care-symptom-logger
+認知症患者の家族が症状のファクトを脳死ぽちぽちでLINEbotから投稿し保存できる
