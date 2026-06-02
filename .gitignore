@@ -1,3 +1,11 @@
+# すべてのフォルダ階層にある .env を無視
+**/.env
+
+# すべてのフォルダ階層にある application-test.properties を無視
+application-test.properties
+
+.DS_Store
+
 # Compiled class file
 *.class
 
@@ -22,3 +30,25 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### VS Code ###
+.vscode/
