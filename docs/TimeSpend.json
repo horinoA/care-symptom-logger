@@ -1,0 +1,76 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "どのくらいかかりましたか？",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🕒 30分まで",
+              "data": "action=time_spend&timespendId=1",
+              "displayText": "30分まで"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🕒 ２時間程度 ",
+              "data": "action=time_spend&timespendId=2",
+              "displayText": "２時間程度 "
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🕒 半日",
+              "data": "action=time_spend&timespendId=3",
+              "displayText": "半日"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🕒 １日以上",
+              "data": "action=time_spend&timespendId=4",
+              "displayText": "1日以上"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "contents": [
+      {
+        "type": "text",
+        "text": "💥 「行動」の具体的な症状を選んでください",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666",
+        "margin": "none",
+        "wrap": true
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "家事がうまくできない",
+          "data": "action=record&categoryId=3&symptomId=1",
+          "displayText": "家事がうまくできない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "服をうまく着られない",
+          "data": "action=record&categoryId=3&symptomId=2",
+          "displayText": "服をうまく着られない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "食事や薬をこぼす・落とす",
+          "data": "action=record&categoryId=3&symptomId=3",
+          "displayText": "食事や薬をこぼす・落とす"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "トイレや風呂掃除が雑",
+          "data": "action=record&categoryId=3&symptomId=4",
+          "displayText": "トイレや風呂掃除が雑"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "外出が極端に減った",
+          "data": "action=record&categoryId=3&symptomId=5",
+          "displayText": "外出が極端に減った"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "寝不足で疲れている",
+          "data": "action=record&categoryId=3&symptomId=6",
+          "displayText": "寝不足で疲れている"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "ゴミを捨てない・溜める",
+          "data": "action=record&categoryId=3&symptomId=7",
+          "displayText": "ゴミを捨てない・溜める"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "お風呂に入りたがらない",
+          "data": "action=record&categoryId=3&symptomId=8",
+          "displayText": "お風呂に入りたがらない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "食事や薬を拒否する",
+          "data": "action=record&categoryId=3&symptomId=9",
+          "displayText": "食事や薬を拒否する"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "すぐに家に帰りたがる",
+          "data": "action=record&categoryId=3&symptomId=10",
+          "displayText": "すぐに家に帰りたがる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "詐欺に引っかかる",
+          "data": "action=record&categoryId=3&symptomId=11",
+          "displayText": "詐欺に引っかかる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "物を盗む（万引き等）",
+          "data": "action=record&categoryId=3&symptomId=12",
+          "displayText": "物を盗む（万引き等）"
+        }
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "↩️ カテゴリ選択に戻る",
+          "data": "action=back_to_category",
+          "displayText": "カテゴリ選択に戻る"
+        }
+      }
+    ]
+  }
+}

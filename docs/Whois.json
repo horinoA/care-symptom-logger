@@ -1,0 +1,65 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "誰の症状ですか？",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "👵 母",
+              "data": "action=select_target&target=mother",
+              "displayText": "母"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "👴 父",
+              "data": "action=select_target&target=father",
+              "displayText": "父"
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🧑 配偶者/その他",
+              "data": "action=select_target&target=other",
+              "displayText": "配偶者/その他"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

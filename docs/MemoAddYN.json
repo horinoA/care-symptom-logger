@@ -1,0 +1,51 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "メモが追加されました。これで保存しますか？",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "💾 この内容で保存する",
+              "data": "action=save_record&has_memo=false",
+              "displayText": "この内容で保存する"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "❌ キャンセルしてメニューに戻る",
+          "data": "action=cancel",
+          "displayText": "キャンセル"
+        }
+      }
+    ]
+  }
+}

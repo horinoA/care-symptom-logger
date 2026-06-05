@@ -1,0 +1,168 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "contents": [
+      {
+        "type": "text",
+        "text": "「💭 記憶と言葉」の具体的な症状を選んでください",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666",
+        "margin": "none",
+        "wrap": true
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "同じことを何度も聞く",
+          "data": "action=record&categoryId=2&symptomId=1",
+          "displayText": "同じことを何度も聞く"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "約束を忘れる",
+          "data": "action=record&categoryId=2&symptomId=2",
+          "displayText": "約束を忘れる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "頻繁に探し物をしている",
+          "data": "action=record&categoryId=2&symptomId=3",
+          "displayText": "頻繁に探し物をしている"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "食事したこと自体を忘れる",
+          "data": "action=record&categoryId=2&symptomId=4",
+          "displayText": "食事したこと自体を忘れる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "同じものを何度も買う",
+          "data": "action=record&categoryId=2&symptomId=5",
+          "displayText": "同じものを何度も買う"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "過去の経歴を思い出せない",
+          "data": "action=record&categoryId=2&symptomId=6",
+          "displayText": "過去の経歴を思い出せない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "家族の顔や名前がわからない",
+          "data": "action=record&categoryId=2&symptomId=7",
+          "displayText": "家族の顔や名前がわからない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "会話で「あれ・それ」が増えた",
+          "data": "action=record&categoryId=2&symptomId=8",
+          "displayText": "会話で「あれ・それ」が増えた"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "言葉が出ない・迷いながら話す",
+          "data": "action=record&categoryId=2&symptomId=9",
+          "displayText": "言葉が出ない・迷いながら話す"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "話のつじつまが合わない",
+          "data": "action=record&categoryId=2&symptomId=10",
+          "displayText": "話のつじつまが合わない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "相手の言葉を理解できない",
+          "data": "action=record&categoryId=2&symptomId=11",
+          "displayText": "相手の言葉を理解できない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "作り話や嘘が増えた",
+          "data": "action=record&categoryId=2&symptomId=12",
+          "displayText": "作り話や嘘が増えた"
+        }
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "style": "link",
+        "action": {
+          "type": "postback",
+          "label": "↩️ カテゴリ選択に戻る",
+          "data": "action=back_to_category",
+          "displayText": "カテゴリ選択に戻る"
+        }
+      }
+    ]
+  }
+}

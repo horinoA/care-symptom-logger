@@ -1,0 +1,76 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "時間帯を選んでください",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🌅 朝",
+              "data": "action=select_timezone&timezone=morning",
+              "displayText": "朝"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "☀️ 昼",
+              "data": "action=select_timezone&timezone=noon",
+              "displayText": "昼"
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🌆 夕方",
+              "data": "action=select_timezone&timezone=evening",
+              "displayText": "夕方"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🌙 夜・深夜",
+              "data": "action=select_timezone&timezone=night",
+              "displayText": "夜・深夜"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

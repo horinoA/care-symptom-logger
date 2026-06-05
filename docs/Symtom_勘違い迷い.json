@@ -1,0 +1,178 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "contents": [
+      {
+        "type": "text",
+        "text": "🌀 「勘違い・迷い」の具体的な症状を選んでください",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666",
+        "margin": "none",
+        "wrap": true
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "日付がわからない",
+          "data": "action=record&categoryId=4&symptomId=1",
+          "displayText": "日付がわからない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "時計が読めない",
+          "data": "action=record&categoryId=4&symptomId=2",
+          "displayText": "時計が読めない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "朝と夜の区別がつかない",
+          "data": "action=record&categoryId=4&symptomId=3",
+          "displayText": "朝と夜の区別がつかない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "季節に合わない服を着る",
+          "data": "action=record&categoryId=4&symptomId=4",
+          "displayText": "季節に合わない服を着る"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "よく物にぶつかる",
+          "data": "action=record&categoryId=4&symptomId=5",
+          "displayText": "よく物にぶつかる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "同じ場所をうろうろする",
+          "data": "action=record&categoryId=4&symptomId=6",
+          "displayText": "同じ場所をうろうろする"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "トイレや風呂の場所を間違える",
+          "data": "action=record&categoryId=4&symptomId=7",
+          "displayText": "トイレや風呂の場所を間違える"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "極端に暑がる・寒がる・かゆがる",
+          "data": "action=record&categoryId=4&symptomId=8",
+          "displayText": "極端に暑がる・寒がる・かゆがる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "家の近所で迷う",
+          "data": "action=record&categoryId=4&symptomId=9",
+          "displayText": "家の近所で迷う"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "外出して帰れなくなる",
+          "data": "action=record&categoryId=4&symptomId=10",
+          "displayText": "外出して帰れなくなる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "今いる場所がわからない",
+          "data": "action=record&categoryId=4&symptomId=11",
+          "displayText": "今いる場所がわからない"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "家族や友人を間違える",
+          "data": "action=record&categoryId=4&symptomId=12",
+          "displayText": "家族や友人を間違える"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "いない人が見える・声が聞こえる",
+          "data": "action=record&categoryId=4&symptomId=13",
+          "displayText": "いない人が見える・声が聞こえる"
+        }
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "↩️ カテゴリ選択に戻る",
+          "data": "action=back_to_category",
+          "displayText": "カテゴリ選択に戻る"
+        }
+      }
+    ]
+  }
+}

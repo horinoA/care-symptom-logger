@@ -92,8 +92,6 @@ erDiagram
   
   symptomArticle ||--o{symptomRec  : "1の症状記事は0or複数の症状記録をもつ"
   symptomArticle ||--o{feeling  : "1の症状記事は0or複数のfeeling（感情）をもつ"
-  symptomArticle ||--|| symptompeoplecare : "1の症状記事(誰が)は1の家系図IDを持つ"
-  symptomArticle ||--|| symptompeoplecare : "1の症状記事(誰に)は1の家系図IDを持つ"
   symptomArticle ||--|| symptompeoplecare : "1の登録者は1登録者IDを持つ"
   registrant ||--o{symptomArticle :"1の登録者は0または複数の症状記事を持つ"
   symptom ||--|{symptomRec  : "1の症状項目は複数の症状記録をもつ"

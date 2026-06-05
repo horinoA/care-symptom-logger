@@ -1,0 +1,30 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "日時を入力してください"
+      }
+    ]
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "datetimepicker",
+          "label": "📅 カレンダーを表示",
+          "data": "action=date",
+          "mode": "datet"
+        },
+        "style": "primary"
+      }
+    ]
+  }
+}

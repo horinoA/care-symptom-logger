@@ -1,0 +1,75 @@
+{
+  "type": "bubble",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "症状のカテゴリを選んでください",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🆘 困った",
+              "data": "action=select_category&categoryId=1",
+              "displayText": "🆘 困った"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "💭 記憶と言葉",
+              "data": "action=select_category&categoryId=2",
+              "displayText": "💭 記憶と言葉"
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "💥 行動",
+              "data": "action=select_category&categoryId=3",
+              "displayText": "💥 行動"
+            }
+          },
+          {
+            "type": "button",
+            "style": "primary",
+            "color": "#00B900",
+            "action": {
+              "type": "postback",
+              "label": "🌀 勘違い・迷い",
+              "data": "action=select_category&categoryId=4",
+              "displayText": "🌀 勘違い・迷い"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

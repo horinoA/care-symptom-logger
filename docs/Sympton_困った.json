@@ -1,0 +1,134 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "contents": [
+      {
+        "type": "text",
+        "text": "🆘 「困った」の具体的な症状を選んでください",
+        "weight": "bold",
+        "size": "sm",
+        "color": "#666666",
+        "margin": "none",
+        "wrap": true
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "暴言や暴力を振るう",
+          "data": "action=record&categoryId=1&symptomId=1",
+          "displayText": "暴言や暴力を振るう"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "異常な回数や内容の電話や手紙",
+          "data": "action=record&categoryId=1&symptomId=2",
+          "displayText": "異常な回数や内容の電話や手紙"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "警察や市役所に無断連絡",
+          "data": "action=record&categoryId=1&symptomId=3",
+          "displayText": "警察や市役所に無断連絡"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "詐欺の被害に遭う",
+          "data": "action=record&categoryId=1&symptomId=4",
+          "displayText": "詐欺の被害に遭う"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "徘徊する",
+          "data": "action=record&categoryId=1&symptomId=5",
+          "displayText": "徘徊する"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "物が盗まれたと誤解する",
+          "data": "action=record&categoryId=1&symptomId=6",
+          "displayText": "物が盗まれたと誤解する"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "食べ物以外のものを食べる",
+          "data": "action=record&categoryId=1&symptomId=7",
+          "displayText": "食べ物以外のものを食べる"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "便の処理が不適切",
+          "data": "action=record&categoryId=1&symptomId=8",
+          "displayText": "便の処理が不適切"
+        }
+      },
+      {
+        "type": "button",
+        "style": "secondary",
+        "height": "sm",
+        "action": {
+          "type": "postback",
+          "label": "性的な行動をとる",
+          "data": "action=record&categoryId=1&symptomId=9",
+          "displayText": "性的な行動をとる"
+        }
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "↩️ カテゴリ選択に戻る",
+          "data": "action=back_to_category",
+          "displayText": "カテゴリ選択に戻る"
+        }
+      }
+    ]
+  }
+}

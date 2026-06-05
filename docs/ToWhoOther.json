@@ -1,0 +1,282 @@
+{
+  "type": "carousel",
+  "contents": [
+    {
+      "type": "bubble",
+      "size": "giga",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "text",
+            "text": "誰に向けた行動ですか？ (1/2)",
+            "weight": "bold",
+            "size": "sm",
+            "color": "#666666"
+          },
+          {
+            "type": "text",
+            "text": "【医療従事者・外部・他世代】",
+            "weight": "bold",
+            "size": "md",
+            "color": "#333333",
+            "margin": "sm"
+          },
+          {
+            "type": "button",
+            "style": "secondary",
+            "height": "sm",
+            "action": {
+              "type": "postback",
+              "label": "🩺 医療従事者 (医師・看護師)",
+              "data": "action=select_to_who&to_who=904",
+              "displayText": "医療従事者"
+            }
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "🧑 配偶者 (夫・妻)",
+                  "data": "action=select_to_who&to_who=302",
+                  "displayText": "配偶者"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👶 子ども (息子・娘)",
+                  "data": "action=select_to_who&to_who=401",
+                  "displayText": "子ども"
+                }
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👥 兄弟・姉妹 (実方)",
+                  "data": "action=select_to_who&to_who=304",
+                  "displayText": "兄弟・姉妹"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👥 義理の兄弟姉妹",
+                  "data": "action=select_to_who&to_who=306",
+                  "displayText": "義理の兄弟姉妹"
+                }
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "🧒 孫",
+                  "data": "action=select_to_who&to_who=501",
+                  "displayText": "孫"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👥 その他親族",
+                  "data": "action=select_to_who&to_who=899",
+                  "displayText": "その他親族"
+                }
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "style": "secondary",
+            "height": "sm",
+            "action": {
+              "type": "postback",
+              "label": "❓ その他",
+              "data": "action=select_to_who&to_who=999",
+              "displayText": "その他"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "bubble",
+      "size": "giga",
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "text",
+            "text": "誰に向けた行動ですか？ (2/2)",
+            "weight": "bold",
+            "size": "sm",
+            "color": "#666666"
+          },
+          {
+            "type": "text",
+            "text": "【家族・親族（高齢世代）】",
+            "weight": "bold",
+            "size": "md",
+            "color": "#333333",
+            "margin": "sm"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👴 父",
+                  "data": "action=select_to_who&to_who=201",
+                  "displayText": "父"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👵 母",
+                  "data": "action=select_to_who&to_who=202",
+                  "displayText": "母"
+                }
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👴 義父",
+                  "data": "action=select_to_who&to_who=203",
+                  "displayText": "義父"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👵 義母",
+                  "data": "action=select_to_who&to_who=204",
+                  "displayText": "義母"
+                }
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👴 祖父",
+                  "data": "action=select_to_who&to_who=101",
+                  "displayText": "祖父"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👵 祖母",
+                  "data": "action=select_to_who&to_who=102",
+                  "displayText": "祖母"
+                }
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👴 義祖父",
+                  "data": "action=select_to_who&to_who=103",
+                  "displayText": "義祖父"
+                }
+              },
+              {
+                "type": "button",
+                "style": "secondary",
+                "height": "sm",
+                "action": {
+                  "type": "postback",
+                  "label": "👵 義祖母",
+                  "data": "action=select_to_who&to_who=104",
+                  "displayText": "義祖母"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
