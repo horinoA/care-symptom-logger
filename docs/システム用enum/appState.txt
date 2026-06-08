@@ -29,3 +29,45 @@ public enum InputPhase {
     /** 4枚目右下：メモ追加後の「最終保存確認」の選択を待っている状態 */
     WAITING_FOR_FINAL_CONFIRM
 }
+
+/**
+ * 時間帯Enum（絶対時間の基準値を持つ）
+ */
+public enum Timezone {
+    MORNING("morning", LocalTime.of(7, 0)),
+    NOON("noon", LocalTime.of(12, 0)),
+    EVENING("evening", LocalTime.of(17, 0)),
+    LATE_NIGHT("late_night", LocalTime.of(22, 0));
+
+    private final String code;
+    private final LocalTime baseTime;
+
+    Timezone(String code, LocalTime baseTime) {
+        this.code = code;
+        this.baseTime = baseTime;
+    }
+
+    public LocalTime getBaseTime() { return baseTime; }
+    public String getCode() { return code; }
+}
+
+/**
+ * 経過時間Enum（Durationを保持し、逆算に使用する）
+ */
+public enum CareDuration {
+    WITHIN_30M("within_30m", Duration.ofMinutes(30)),
+    AROUND_2H("around_2h", Duration.ofHours(2)),
+    HALF_DAY("half_day", Duration.ofHours(12)),
+    OVER_1D("over_1d", Duration.ofDays(1));
+
+    private final String code;
+    private final Duration temporalAmount;
+
+    CareDuration(String code, Duration temporalAmount) {
+        this.code = code;
+        this.temporalAmount = temporalAmount;
+    }
+
+    public Duration getTemporalAmount() { return temporalAmount; }
+    public String getCode() { return code; }
+}

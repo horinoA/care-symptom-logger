@@ -12,6 +12,9 @@
 **/pg_data/
 **/db_data/
 
+# Docker data volumes (Local DB & GUI settings)
+**/pgadmin_data/
+
 # Compiled class file
 *.class
 
