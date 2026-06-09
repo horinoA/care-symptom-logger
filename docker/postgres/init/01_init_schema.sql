@@ -74,6 +74,7 @@ CREATE TABLE event.care_records (
     duration VARCHAR(50) NOT NULL,
     remitted_at TIMESTAMPTZ NOT NULL,
     memo TEXT,
+    is_delete boolean NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -31,6 +31,7 @@ erDiagram
         timestamptz remitted_at "症状消失日時、時間帯と経過時間から計算して挿入"
         text memo "任意メモ（実名等入力不可のアテンション付き）"
         timestamptz created_at "システム登録日時"
+        boolean is_delete "将来対応する論理削除用"
     }
 
     care_record_details:::event {
