@@ -187,9 +187,20 @@
             "height": "sm",
             "action": {
               "type": "postback",
-              "label": "🧒 孫・その他親族",
+              "label": "🧒 孫",
               "data": "action=select_target&target=501",
-              "displayText": "孫・その他親族"
+              "displayText": "孫"
+            }
+          },
+          {
+            "type": "button",
+            "style": "secondary",
+            "height": "sm",
+            "action": {
+              "type": "postback",
+              "label": "🧒 その他親族",
+              "data": "action=select_target&target=501",
+              "displayText": "その他親族"
             }
           }
         ]
