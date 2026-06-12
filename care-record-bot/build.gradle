@@ -28,6 +28,11 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// JSON処理用（Jacksonを利用するため）
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+	// Jackson (JSON解析エラーのハンドリング用)
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 	// LINE Bot SDK
 	implementation 'com.linecorp.bot:line-bot-spring-boot-handler:8.0.0'
 	implementation 'com.linecorp.bot:line-bot-spring-boot-web:8.0.0'
