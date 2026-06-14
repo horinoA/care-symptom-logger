@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Data
 @Builder
-@Table("core.people_care")
+@Table(name = "people_care", schema = "core")
 public class PeopleCare {
     @Id
     private Integer id;

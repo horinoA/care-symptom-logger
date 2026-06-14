@@ -42,20 +42,20 @@ public class CareRecordApplicationService {
         // 1. マスタの存在チェック（対象者）
         if (!peopleCareRepository.existsById(command.getTargetId())) {
             log.warn("指定された対象者マスタが存在しません: {}", command.getTargetId());
-            throw new NotFoundMasterExceprion("指定された対象者が見つかりません。");
+            throw new NotFoundMasterExceprion("error.carerecord.target.notfound");
         }
 
         // 誰に対して（toWhoId）が指定されている場合もチェック
         if (command.getToWhoId() != null && !peopleCareRepository.existsById(command.getToWhoId())) {
             log.warn("指定されたToWhoマスタが存在しません: {}", command.getToWhoId());
-            throw new NotFoundMasterExceprion("指定された関連者が見つかりません。");
+            throw new NotFoundMasterExceprion("error.carerecord.towho.notfound");
         }
 
         // 2. マスタの存在チェック（症状）
         for (Integer symptomId : command.getSymptomIds()) {
             if (!symptomNameRepository.existsById(symptomId)) {
                 log.warn("指定された症状マスタが存在しません: {}", symptomId);
-                throw new NotFoundMasterExceprion("指定された症状が見つかりません。");
+                throw new NotFoundMasterExceprion("error.carerecord.symptom.notfound");
             }
         }
 

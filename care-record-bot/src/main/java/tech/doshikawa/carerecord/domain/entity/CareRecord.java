@@ -1,7 +1,9 @@
 package tech.doshikawa.carerecord.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -18,7 +20,9 @@ import java.util.Set;
  */
 @Data
 @Builder
-@Table("event.care_records")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "care_records", schema = "event")
 public class CareRecord implements Persistable<Long> {
     
     @Id
@@ -36,7 +40,8 @@ public class CareRecord implements Persistable<Long> {
     @Builder.Default
     private Boolean isDelete = false;
     
-    private OffsetDateTime createdAt;
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     // 子テーブル（care_record_details）への一対多マッピング
     // 親が保存されると子も連動して保存（Insert/Update/Delete）されます
