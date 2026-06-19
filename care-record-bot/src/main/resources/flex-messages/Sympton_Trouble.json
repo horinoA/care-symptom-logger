@@ -22,7 +22,7 @@
         "action": {
           "type": "postback",
           "label": "暴言や暴力を振るう",
-          "data": "action=record&categoryId=1&symptomId=1",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3011",
           "displayText": "暴言や暴力を振るう"
         }
       },
@@ -33,7 +33,7 @@
         "action": {
           "type": "postback",
           "label": "異常な回数や内容の電話や手紙",
-          "data": "action=record&categoryId=1&symptomId=2",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3012",
           "displayText": "異常な回数や内容の電話や手紙"
         }
       },
@@ -44,7 +44,7 @@
         "action": {
           "type": "postback",
           "label": "警察や市役所に無断連絡",
-          "data": "action=record&categoryId=1&symptomId=3",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3013",
           "displayText": "警察や市役所に無断連絡"
         }
       },
@@ -55,7 +55,7 @@
         "action": {
           "type": "postback",
           "label": "詐欺の被害に遭う",
-          "data": "action=record&categoryId=1&symptomId=4",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3014",
           "displayText": "詐欺の被害に遭う"
         }
       },
@@ -66,7 +66,7 @@
         "action": {
           "type": "postback",
           "label": "徘徊する",
-          "data": "action=record&categoryId=1&symptomId=5",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3015",
           "displayText": "徘徊する"
         }
       },
@@ -77,7 +77,7 @@
         "action": {
           "type": "postback",
           "label": "物が盗まれたと誤解する",
-          "data": "action=record&categoryId=1&symptomId=6",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3016",
           "displayText": "物が盗まれたと誤解する"
         }
       },
@@ -88,7 +88,7 @@
         "action": {
           "type": "postback",
           "label": "食べ物以外のものを食べる",
-          "data": "action=record&categoryId=1&symptomId=7",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3017",
           "displayText": "食べ物以外のものを食べる"
         }
       },
@@ -99,7 +99,7 @@
         "action": {
           "type": "postback",
           "label": "便の処理が不適切",
-          "data": "action=record&categoryId=1&symptomId=8",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3018",
           "displayText": "便の処理が不適切"
         }
       },
@@ -110,7 +110,7 @@
         "action": {
           "type": "postback",
           "label": "性的な行動をとる",
-          "data": "action=record&categoryId=1&symptomId=9",
+          "data": "action=select_symptom_detail&categoryId=30&symptomId=3019",
           "displayText": "性的な行動をとる"
         }
       }

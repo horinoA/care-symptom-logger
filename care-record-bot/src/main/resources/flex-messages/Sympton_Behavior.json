@@ -22,7 +22,7 @@
         "action": {
           "type": "postback",
           "label": "家事がうまくできない",
-          "data": "action=record&categoryId=3&symptomId=1",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5011",
           "displayText": "家事がうまくできない"
         }
       },
@@ -33,7 +33,7 @@
         "action": {
           "type": "postback",
           "label": "服をうまく着られない",
-          "data": "action=record&categoryId=3&symptomId=2",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5012",
           "displayText": "服をうまく着られない"
         }
       },
@@ -44,7 +44,7 @@
         "action": {
           "type": "postback",
           "label": "食事や薬をこぼす・落とす",
-          "data": "action=record&categoryId=3&symptomId=3",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5013",
           "displayText": "食事や薬をこぼす・落とす"
         }
       },
@@ -55,7 +55,7 @@
         "action": {
           "type": "postback",
           "label": "トイレや風呂掃除が雑",
-          "data": "action=record&categoryId=3&symptomId=4",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5014",
           "displayText": "トイレや風呂掃除が雑"
         }
       },
@@ -66,7 +66,7 @@
         "action": {
           "type": "postback",
           "label": "外出が極端に減った",
-          "data": "action=record&categoryId=3&symptomId=5",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5015",
           "displayText": "外出が極端に減った"
         }
       },
@@ -77,7 +77,7 @@
         "action": {
           "type": "postback",
           "label": "寝不足で疲れている",
-          "data": "action=record&categoryId=3&symptomId=6",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5016",
           "displayText": "寝不足で疲れている"
         }
       },
@@ -88,7 +88,7 @@
         "action": {
           "type": "postback",
           "label": "ゴミを捨てない・溜める",
-          "data": "action=record&categoryId=3&symptomId=7",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5017",
           "displayText": "ゴミを捨てない・溜める"
         }
       },
@@ -99,7 +99,7 @@
         "action": {
           "type": "postback",
           "label": "お風呂に入りたがらない",
-          "data": "action=record&categoryId=3&symptomId=8",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5018",
           "displayText": "お風呂に入りたがらない"
         }
       },
@@ -110,7 +110,7 @@
         "action": {
           "type": "postback",
           "label": "食事や薬を拒否する",
-          "data": "action=record&categoryId=3&symptomId=9",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5019",
           "displayText": "食事や薬を拒否する"
         }
       },
@@ -121,7 +121,7 @@
         "action": {
           "type": "postback",
           "label": "すぐに家に帰りたがる",
-          "data": "action=record&categoryId=3&symptomId=10",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5020",
           "displayText": "すぐに家に帰りたがる"
         }
       },
@@ -132,7 +132,7 @@
         "action": {
           "type": "postback",
           "label": "詐欺に引っかかる",
-          "data": "action=record&categoryId=3&symptomId=11",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5021",
           "displayText": "詐欺に引っかかる"
         }
       },
@@ -143,7 +143,7 @@
         "action": {
           "type": "postback",
           "label": "物を盗む（万引き等）",
-          "data": "action=record&categoryId=3&symptomId=12",
+          "data": "action=select_symptom_detail&categoryId=50&symptomId=5022",
           "displayText": "物を盗む（万引き等）"
         }
       }

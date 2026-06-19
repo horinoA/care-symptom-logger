@@ -36,7 +36,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👴 義父",
-                  "data": "action=select_target&target=203",
+                  "data": "action=select_who_detail&id=203",
                   "displayText": "義父"
                 }
               },
@@ -47,7 +47,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👵 義母",
-                  "data": "action=select_target&target=204",
+                  "data": "action=select_who_detail&id=204",
                   "displayText": "義母"
                 }
               }
@@ -65,7 +65,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👴 祖父",
-                  "data": "action=select_target&target=101",
+                  "data": "action=select_who_detail&id=101",
                   "displayText": "祖父"
                 }
               },
@@ -76,7 +76,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👵 祖母",
-                  "data": "action=select_target&target=102",
+                  "data": "action=select_who_detail&id=102",
                   "displayText": "祖母"
                 }
               }
@@ -94,7 +94,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👴 義祖父",
-                  "data": "action=select_target&target=103",
+                  "data": "action=select_who_detail&id=103",
                   "displayText": "義祖父"
                 }
               },
@@ -105,7 +105,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👵 義祖母",
-                  "data": "action=select_target&target=104",
+                  "data": "action=select_who_detail&id=104",
                   "displayText": "義祖母"
                 }
               }
@@ -144,7 +144,7 @@
             "action": {
               "type": "postback",
               "label": "🧑 配偶者 (夫・妻)",
-              "data": "action=select_target&target=302",
+              "data": "action=select_who_detail&id=302",
               "displayText": "配偶者"
             }
           },
@@ -155,7 +155,7 @@
             "action": {
               "type": "postback",
               "label": "👥 兄弟・姉妹 (実方)",
-              "data": "action=select_target&target=304",
+              "data": "action=select_who_detail&id=303",
               "displayText": "兄弟・姉妹"
             }
           },
@@ -166,7 +166,7 @@
             "action": {
               "type": "postback",
               "label": "👥 義理の兄弟・姉妹",
-              "data": "action=select_target&target=306",
+              "data": "action=select_who_detail&id=304",
               "displayText": "義理の兄弟・姉妹"
             }
           },
@@ -177,7 +177,7 @@
             "action": {
               "type": "postback",
               "label": "👶 子ども (息子・娘)",
-              "data": "action=select_target&target=401",
+              "data": "action=select_who_detail&id=401",
               "displayText": "子ども"
             }
           },
@@ -188,7 +188,7 @@
             "action": {
               "type": "postback",
               "label": "🧒 孫",
-              "data": "action=select_target&target=501",
+              "data": "action=select_who_detail&id=501",
               "displayText": "孫"
             }
           },
@@ -199,7 +199,7 @@
             "action": {
               "type": "postback",
               "label": "🧒 その他親族",
-              "data": "action=select_target&target=501",
+              "data": "action=select_who_detail&id=899",
               "displayText": "その他親族"
             }
           }

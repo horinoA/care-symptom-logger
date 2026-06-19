@@ -20,8 +20,8 @@
         "action": {
           "type": "datetimepicker",
           "label": "📅 カレンダーを表示",
-          "data": "action=date",
-          "mode": "datet"
+          "data": "action=select_date",
+          "mode": "date"
         },
         "style": "primary"
       }

@@ -8,7 +8,7 @@
     "contents": [
       {
         "type": "text",
-        "text": "（発症者が）誰に対して行動しましたか？",
+        "text": "誰の症状ですか？",
         "weight": "bold",
         "size": "sm",
         "color": "#666666"
@@ -24,9 +24,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🧑‍💻 自分（介護者）",
-              "data": "action=select_to_who&to_who=self",
-              "displayText": "自分（介護者）"
+              "label": "👵 母",
+              "data": "action=select_who&id=202",
+              "displayText": "母"
             }
           },
           {
@@ -35,9 +35,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "📋 ケアマネ",
-              "data": "action=select_to_who&to_who=care_manager",
-              "displayText": "ケアマネ"
+              "label": "👴 父",
+              "data": "action=select_who&id=201",
+              "displayText": "父"
             }
           }
         ]
@@ -53,20 +53,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🏠 施設スタッフ",
-              "data": "action=select_to_who&to_who=facility_staff",
-              "displayText": "施設スタッフ"
-            }
-          },
-          {
-            "type": "button",
-            "style": "primary",
-            "color": "#00B900",
-            "action": {
-              "type": "postback",
-              "label": "👥 その他の人",
-              "data": "action=select_to_who&to_who=other",
-              "displayText": "その他の人"
+              "label": "🧑 配偶者/その他",
+              "data": "action=show_who_sub",
+              "displayText": "配偶者/その他"
             }
           }
         ]

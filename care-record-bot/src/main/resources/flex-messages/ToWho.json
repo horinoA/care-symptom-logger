@@ -8,7 +8,7 @@
     "contents": [
       {
         "type": "text",
-        "text": "どのくらいかかりましたか？",
+        "text": "（発症者が）誰に対して行動しましたか？",
         "weight": "bold",
         "size": "sm",
         "color": "#666666"
@@ -24,9 +24,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🕒 30分まで",
-              "data": "action=time_spend&timespendId=1",
-              "displayText": "30分まで"
+              "label": "🧑‍💻 自分（介護者）",
+              "data": "action=select_to_who&id=301",
+              "displayText": "自分（介護者）"
             }
           },
           {
@@ -35,9 +35,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🕒 ２時間程度 ",
-              "data": "action=time_spend&timespendId=2",
-              "displayText": "２時間程度 "
+              "label": "📋 ケアマネ",
+              "data": "action=select_to_who&id=901",
+              "displayText": "ケアマネ"
             }
           }
         ]
@@ -53,9 +53,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🕒 半日",
-              "data": "action=time_spend&timespendId=3",
-              "displayText": "半日"
+              "label": "🏠 施設スタッフ",
+              "data": "action=select_to_who&id=902",
+              "displayText": "施設スタッフ"
             }
           },
           {
@@ -64,9 +64,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🕒 １日以上",
-              "data": "action=time_spend&timespendId=4",
-              "displayText": "1日以上"
+              "label": "👥 その他の人",
+              "data": "action=show_to_who_sub",
+              "displayText": "その他の人"
             }
           }
         ]

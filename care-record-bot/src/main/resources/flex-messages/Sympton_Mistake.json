@@ -22,7 +22,7 @@
         "action": {
           "type": "postback",
           "label": "日付がわからない",
-          "data": "action=record&categoryId=4&symptomId=1",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6011",
           "displayText": "日付がわからない"
         }
       },
@@ -33,7 +33,7 @@
         "action": {
           "type": "postback",
           "label": "時計が読めない",
-          "data": "action=record&categoryId=4&symptomId=2",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6012",
           "displayText": "時計が読めない"
         }
       },
@@ -44,7 +44,7 @@
         "action": {
           "type": "postback",
           "label": "朝と夜の区別がつかない",
-          "data": "action=record&categoryId=4&symptomId=3",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6013",
           "displayText": "朝と夜の区別がつかない"
         }
       },
@@ -55,7 +55,7 @@
         "action": {
           "type": "postback",
           "label": "季節に合わない服を着る",
-          "data": "action=record&categoryId=4&symptomId=4",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6014",
           "displayText": "季節に合わない服を着る"
         }
       },
@@ -66,7 +66,7 @@
         "action": {
           "type": "postback",
           "label": "よく物にぶつかる",
-          "data": "action=record&categoryId=4&symptomId=5",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6015",
           "displayText": "よく物にぶつかる"
         }
       },
@@ -77,7 +77,7 @@
         "action": {
           "type": "postback",
           "label": "同じ場所をうろうろする",
-          "data": "action=record&categoryId=4&symptomId=6",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6016",
           "displayText": "同じ場所をうろうろする"
         }
       },
@@ -88,7 +88,7 @@
         "action": {
           "type": "postback",
           "label": "トイレや風呂の場所を間違える",
-          "data": "action=record&categoryId=4&symptomId=7",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6017",
           "displayText": "トイレや風呂の場所を間違える"
         }
       },
@@ -99,7 +99,7 @@
         "action": {
           "type": "postback",
           "label": "極端に暑がる・寒がる・かゆがる",
-          "data": "action=record&categoryId=4&symptomId=8",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6018",
           "displayText": "極端に暑がる・寒がる・かゆがる"
         }
       },
@@ -110,7 +110,7 @@
         "action": {
           "type": "postback",
           "label": "家の近所で迷う",
-          "data": "action=record&categoryId=4&symptomId=9",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6019",
           "displayText": "家の近所で迷う"
         }
       },
@@ -121,7 +121,7 @@
         "action": {
           "type": "postback",
           "label": "外出して帰れなくなる",
-          "data": "action=record&categoryId=4&symptomId=10",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6020",
           "displayText": "外出して帰れなくなる"
         }
       },
@@ -132,7 +132,7 @@
         "action": {
           "type": "postback",
           "label": "今いる場所がわからない",
-          "data": "action=record&categoryId=4&symptomId=11",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6021",
           "displayText": "今いる場所がわからない"
         }
       },
@@ -143,7 +143,7 @@
         "action": {
           "type": "postback",
           "label": "家族や友人を間違える",
-          "data": "action=record&categoryId=4&symptomId=12",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6022",
           "displayText": "家族や友人を間違える"
         }
       },
@@ -154,7 +154,7 @@
         "action": {
           "type": "postback",
           "label": "いない人が見える・声が聞こえる",
-          "data": "action=record&categoryId=4&symptomId=13",
+          "data": "action=select_symptom_detail&categoryId=60&symptomId=6023",
           "displayText": "いない人が見える・声が聞こえる"
         }
       }

@@ -8,7 +8,7 @@
     "contents": [
       {
         "type": "text",
-        "text": "症状の入力を続けますか？",
+        "text": "入力お疲れ様でした。これで保存しますか？",
         "weight": "bold",
         "size": "sm",
         "color": "#666666"
@@ -24,9 +24,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🙆‍♂️ はい",
-              "data": "action=symptonAdd=ok",
-              "displayText": "はい"
+              "label": "💾 メモなしで保存",
+              "data": "action=save_no_memo",
+              "displayText": "メモなしで保存"
             }
           },
           {
@@ -35,12 +35,27 @@
             "color": "#0056B3",
             "action": {
               "type": "postback",
-              "label": "➡️ 次のステップへ",
-              "data": "action=symptonAdd=no",
-              "displayText": "次のステップへ（日付）"
+              "label": "📝 メモ追加保存",
+              "data": "action=want_memo",
+              "displayText": "メモを入力する"
             }
           }
         ]
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "❌ キャンセルしてメニューに戻る",
+          "data": "action=cancel_record",
+          "displayText": "キャンセル"
+        }
       }
     ]
   }

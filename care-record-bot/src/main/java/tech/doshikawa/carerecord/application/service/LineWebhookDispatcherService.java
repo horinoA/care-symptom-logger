@@ -138,7 +138,7 @@ public class LineWebhookDispatcherService {
         UserSession session = UserSession.builder()
                 .userId(userId)
                 .sessionId(UUID.randomUUID())
-                .currentPhase(InputPhase.WAITING_FOR_SYMPTOM)
+                .currentPhase(InputPhase.WAITING_FOR_SYMPTOM_CATEGORY)
                 .tempData(JsonData.of(toJson(draft)))
                 .isNew(true)
                 .build();

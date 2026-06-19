@@ -1,6 +1,5 @@
 {
   "type": "bubble",
-  "size": "giga",
   "body": {
     "type": "box",
     "layout": "vertical",
@@ -8,7 +7,7 @@
     "contents": [
       {
         "type": "text",
-        "text": "時間帯を選んでください",
+        "text": "症状のカテゴリを選んでください",
         "weight": "bold",
         "size": "sm",
         "color": "#666666"
@@ -24,9 +23,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🌅 朝",
-              "data": "action=select_timezone&timezone=morning",
-              "displayText": "朝"
+              "label": "🆘 困った",
+              "data": "action=select_symptom_category&categoryId=30",
+              "displayText": "🆘 困った"
             }
           },
           {
@@ -35,9 +34,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "☀️ 昼",
-              "data": "action=select_timezone&timezone=noon",
-              "displayText": "昼"
+              "label": "💭 記憶と言葉",
+              "data": "action=select_symptom_category&categoryId=40",
+              "displayText": "💭 記憶と言葉"
             }
           }
         ]
@@ -53,9 +52,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🌆 夕方",
-              "data": "action=select_timezone&timezone=evening",
-              "displayText": "夕方"
+              "label": "💥 行動",
+              "data": "action=select_symptom_category&categoryId=50",
+              "displayText": "💥 行動"
             }
           },
           {
@@ -64,9 +63,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "🌙 夜・深夜",
-              "data": "action=select_timezone&timezone=night",
-              "displayText": "夜・深夜"
+              "label": "🌀 勘違い・迷い",
+              "data": "action=select_symptom_category&categoryId=60",
+              "displayText": "🌀 勘違い・迷い"
             }
           }
         ]

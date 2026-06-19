@@ -25,7 +25,7 @@
             "action": {
               "type": "postback",
               "label": "💾 この内容で保存する",
-              "data": "action=save_record&has_memo=false",
+              "data": "action=save_final",
               "displayText": "この内容で保存する"
             }
           }
@@ -42,7 +42,7 @@
         "action": {
           "type": "postback",
           "label": "❌ キャンセルしてメニューに戻る",
-          "data": "action=cancel",
+          "data": "action=cancel_record",
           "displayText": "キャンセル"
         }
       }

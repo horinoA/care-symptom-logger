@@ -8,7 +8,7 @@
     "contents": [
       {
         "type": "text",
-        "text": "入力お疲れ様でした。これで保存しますか？",
+        "text": "症状の入力を続けますか？",
         "weight": "bold",
         "size": "sm",
         "color": "#666666"
@@ -24,9 +24,9 @@
             "color": "#00B900",
             "action": {
               "type": "postback",
-              "label": "💾 メモなしで保存",
-              "data": "action=save_record&has_memo=false",
-              "displayText": "メモなしで保存"
+              "label": "🙆‍♂️ はい",
+              "data": "action=continue_symptom",
+              "displayText": "はい"
             }
           },
           {
@@ -35,27 +35,12 @@
             "color": "#0056B3",
             "action": {
               "type": "postback",
-              "label": "📝 メモ追加保存",
-              "data": "ction=request_memo",
-              "displayText": "メモを入力する"
+              "label": "➡️ 次のステップへ",
+              "data": "action=next_to_date",
+              "displayText": "次のステップへ（日付）"
             }
           }
         ]
-      }
-    ]
-  },
-  "footer": {
-    "type": "box",
-    "layout": "vertical",
-    "contents": [
-      {
-        "type": "button",
-        "action": {
-          "type": "postback",
-          "label": "❌ キャンセルしてメニューに戻る",
-          "data": "action=cancel",
-          "displayText": "キャンセル"
-        }
       }
     ]
   }
