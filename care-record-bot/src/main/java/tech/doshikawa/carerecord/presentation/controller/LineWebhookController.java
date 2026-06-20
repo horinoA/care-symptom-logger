@@ -44,11 +44,6 @@ public class LineWebhookController {
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) {
         log.info("Controller: Postbackイベントを受信しました。");
-
-        String replyToken = event.replyToken();
-        String userId = event.source() != null ? event.source().userId() : null;
-        String data = event.postback().data();
-
-        dispatcherService.handlePostback(replyToken, userId, data);
+        dispatcherService.handlePostback(event);
     }
 }

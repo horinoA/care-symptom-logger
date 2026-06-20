@@ -20,9 +20,19 @@ import tech.doshikawa.carerecord.domain.type.TimeSpend;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import org.springframework.dao.DuplicateKeyException;
+import tech.doshikawa.carerecord.domain.entity.LineWebhookEvent;
+import tech.doshikawa.carerecord.domain.repository.LineWebhookEventRepository;
+import tech.doshikawa.carerecord.application.service.handler.PostbackActionHandler;
+import com.linecorp.bot.webhook.model.PostbackEvent;
 
 @Slf4j
 @Service
@@ -32,6 +42,8 @@ public class LineWebhookDispatcherService {
     private final UserSessionRepository userSessionRepository;
     private final CareRecordApplicationService careRecordService;
     private final MessagingApiClient messagingApiClient;
+    private final LineWebhookEventRepository eventRepository;
+    private final List<PostbackActionHandler> actionHandlers;
     
     // SpringのDIに依存せず、独自にObjectMapperを定義
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -128,9 +140,87 @@ public class LineWebhookDispatcherService {
     }
 
     @Transactional
-    public void handlePostback(String replyToken, String userId, String data) {
-        log.info("LINEからPostbackイベントを受信しました。ユーザーID: {}, データ: {}", userId, data);
-        reply(replyToken, "Postbackを受け付けました: " + data);
+    public void handlePostback(PostbackEvent event) {
+        String eventId = event.webhookEventId();
+        String userId = event.source() != null ? event.source().userId() : null;
+        
+        log.info("LINEからPostbackイベントを受信しました。ユーザーID: {}, eventId: {}", userId, eventId);
+
+        if (userId == null) return;
+
+        // 【第一の盾】冪等性のチェック
+        try {
+            eventRepository.save(LineWebhookEvent.builder()
+                .eventId(eventId)
+                .userId(userId)
+                .eventType("postback")
+                .lineTimestamp(OffsetDateTime.ofInstant(java.time.Instant.ofEpochMilli(event.timestamp()), ZoneId.systemDefault()))
+                .status("PROCESSING")
+                .build());
+        } catch (DuplicateKeyException e) {
+            log.info("既に処理済みのイベントです。無視して200を返します。eventId: {}", eventId);
+            return;
+        }
+
+        UserSession session = userSessionRepository.findById(userId)
+            .orElseThrow(() -> new IllegalStateException("セッションが存在しません"));
+
+        String data = event.postback().data();
+        Map<String, String> params = parsePostbackData(data);
+        String action = params.get("action");
+
+        if (action == null) {
+            log.warn("actionが指定されていません: {}", data);
+            markEventStatus(eventId, "ERROR");
+            return;
+        }
+
+        PostbackActionHandler handler = actionHandlers.stream()
+            .filter(h -> h.supports(action))
+            .findFirst()
+            .orElse(null);
+
+        if (handler == null) {
+            log.warn("未知のアクションです: {}", action);
+            markEventStatus(eventId, "ERROR");
+            return;
+        }
+
+        // 【第二の盾】フェーズチェック
+        if (!handler.getAllowedPhases().contains(session.getCurrentPhase())) {
+            log.warn("現在のフェーズ {} では許可されないアクションです: {}", session.getCurrentPhase(), action);
+            reply(event.replyToken(), "現在の状態では無効な操作です。過去のボタンを押していないか確認してください。");
+            markEventStatus(eventId, "ERROR");
+            return;
+        }
+
+        // 将軍に処理を委譲
+        handler.handle(event.replyToken(), session, params);
+
+        // 戦果の記録
+        markEventStatus(eventId, "COMPLETED");
+    }
+
+    private void markEventStatus(String eventId, String status) {
+        eventRepository.findById(eventId).ifPresent(e -> {
+            e.setStatus(status);
+            eventRepository.save(e);
+        });
+    }
+
+    private Map<String, String> parsePostbackData(String data) {
+        Map<String, String> params = new HashMap<>();
+        if (data == null || data.isEmpty()) return params;
+        String[] pairs = data.split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf("=");
+            if (idx > 0) {
+                String key = URLDecoder.decode(pair.substring(0, idx), StandardCharsets.UTF_8);
+                String value = URLDecoder.decode(pair.substring(idx + 1), StandardCharsets.UTF_8);
+                params.put(key, value);
+            }
+        }
+        return params;
     }
 
     private void startNewSession(String userId) {
