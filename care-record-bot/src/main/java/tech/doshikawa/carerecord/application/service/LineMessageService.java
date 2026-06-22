@@ -21,7 +21,9 @@ import java.util.List;
 public class LineMessageService {
 
     private final MessagingApiClient messagingApiClient;
-    private final ObjectMapper objectMapper;
+
+    // SpringのDIに依存せず、独自にObjectMapperを定義
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void replyText(String replyToken, String text) {
         reply(replyToken, List.of(new TextMessage(text)));

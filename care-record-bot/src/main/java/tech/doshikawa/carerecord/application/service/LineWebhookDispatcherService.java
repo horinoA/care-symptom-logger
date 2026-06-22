@@ -44,6 +44,7 @@ public class LineWebhookDispatcherService {
     private final MessagingApiClient messagingApiClient;
     private final LineWebhookEventRepository eventRepository;
     private final List<PostbackActionHandler> actionHandlers;
+    private final LineMessageService lineMessageService;
     
     // SpringのDIに依存せず、独自にObjectMapperを定義
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -63,6 +64,12 @@ public class LineWebhookDispatcherService {
         // セッションがない場合は新規作成して開始
         if (session == null || session.getCurrentPhase().isInitialPhase()) {
             startNewSession(userId);
+            
+            if ("記録".equals(text) || "開始".equals(text)) {
+                lineMessageService.replyFlexMessage(replyToken, "症状カテゴリ選択", "SymptomCategoryName.json");
+                return;
+            }
+
             session = userSessionRepository.findById(userId).get();
             CareRecordDraft draft = getDraft(session);
             
