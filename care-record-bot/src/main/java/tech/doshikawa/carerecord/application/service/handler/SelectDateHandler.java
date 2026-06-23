@@ -18,6 +18,7 @@ public class SelectDateHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
+    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {
@@ -32,6 +33,13 @@ public class SelectDateHandler implements PostbackActionHandler {
     @Override
     public void handle(String replyToken, UserSession session, Map<String, String> params) {
         log.info("Executing SelectDateHandler with params: {}", params);
+        
+        String dateStr = params.get("date");
+        if (dateStr != null) {
+            sessionHelper.updateDraft(session, draft -> {
+                draft.setOnsetAt(java.time.OffsetDateTime.parse(dateStr + "T00:00:00+09:00"));
+            });
+        }
         
         session.setCurrentPhase(InputPhase.WAITING_FOR_TIMEZONE);
         sessionRepository.save(session);

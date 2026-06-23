@@ -18,6 +18,7 @@ public class SaveFinalHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
+    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {

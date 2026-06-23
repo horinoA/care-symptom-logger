@@ -26,12 +26,14 @@ public class LineWebhookEvent implements Persistable<String> {
     private String eventType;
     private OffsetDateTime lineTimestamp;
     private String status;
-    private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
+    @Builder.Default
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+    @Builder.Default
+    private OffsetDateTime updatedAt = OffsetDateTime.now();
 
     @Transient
     @Builder.Default
-    private boolean isNew = true;
+    private boolean isNew = false;
 
     @Override
     public String getId() {

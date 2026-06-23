@@ -18,6 +18,7 @@ public class SelectDurationHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
+    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {
@@ -32,6 +33,13 @@ public class SelectDurationHandler implements PostbackActionHandler {
     @Override
     public void handle(String replyToken, UserSession session, Map<String, String> params) {
         log.info("Executing SelectDurationHandler with params: {}", params);
+        
+        String durationIdStr = params.get("durationId");
+        if (durationIdStr != null) {
+            sessionHelper.updateDraft(session, draft -> {
+                draft.setDuration(tech.doshikawa.carerecord.domain.type.TimeSpend.fromId(durationIdStr));
+            });
+        }
         
         session.setCurrentPhase(InputPhase.WAITING_FOR_WHO);
         sessionRepository.save(session);

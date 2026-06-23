@@ -18,6 +18,7 @@ public class SelectSymptomDetailHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
+    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {
@@ -32,6 +33,17 @@ public class SelectSymptomDetailHandler implements PostbackActionHandler {
     @Override
     public void handle(String replyToken, UserSession session, Map<String, String> params) {
         log.info("Executing SelectSymptomDetailHandler with params: {}", params);
+        
+        String symptomIdStr = params.get("symptomId");
+        if (symptomIdStr != null) {
+            Integer symptomId = Integer.parseInt(symptomIdStr);
+            sessionHelper.updateDraft(session, draft -> {
+                if (draft.getSymptomIds() == null) {
+                    draft.setSymptomIds(new java.util.ArrayList<>());
+                }
+                draft.getSymptomIds().add(symptomId);
+            });
+        }
         
         session.setCurrentPhase(InputPhase.WAITING_FOR_LOOP_CHOICE);
         sessionRepository.save(session);

@@ -18,6 +18,7 @@ public class SelectToWhoDetailHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
+    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {
@@ -32,6 +33,13 @@ public class SelectToWhoDetailHandler implements PostbackActionHandler {
     @Override
     public void handle(String replyToken, UserSession session, Map<String, String> params) {
         log.info("Executing SelectToWhoDetailHandler with params: {}", params);
+        
+        String toWhoIdStr = params.get("toWhoId");
+        if (toWhoIdStr != null) {
+            sessionHelper.updateDraft(session, draft -> {
+                draft.setToWhoId(Integer.parseInt(toWhoIdStr));
+            });
+        }
         
         session.setCurrentPhase(InputPhase.WAITING_FOR_SAVE_OR_MEMO);
         sessionRepository.save(session);

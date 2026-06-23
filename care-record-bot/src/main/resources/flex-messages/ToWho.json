@@ -25,7 +25,7 @@
             "action": {
               "type": "postback",
               "label": "🧑‍💻 自分（介護者）",
-              "data": "action=select_to_who&id=301",
+              "data": "action=select_to_who&toWhoId=301",
               "displayText": "自分（介護者）"
             }
           },
@@ -36,7 +36,7 @@
             "action": {
               "type": "postback",
               "label": "📋 ケアマネ",
-              "data": "action=select_to_who&id=901",
+              "data": "action=select_to_who&toWhoId=901",
               "displayText": "ケアマネ"
             }
           }
@@ -54,7 +54,7 @@
             "action": {
               "type": "postback",
               "label": "🏠 施設スタッフ",
-              "data": "action=select_to_who&id=902",
+              "data": "action=select_to_who&toWhoId=902",
               "displayText": "施設スタッフ"
             }
           },

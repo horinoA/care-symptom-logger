@@ -23,7 +23,8 @@ public class LineMessageService {
     private final MessagingApiClient messagingApiClient;
 
     // SpringのDIに依存せず、独自にObjectMapperを定義
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public void replyText(String replyToken, String text) {
         reply(replyToken, List.of(new TextMessage(text)));

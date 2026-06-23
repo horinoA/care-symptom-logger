@@ -61,16 +61,19 @@ public class LineWebhookDispatcherService {
 
         UserSession session = userSessionRepository.findById(userId).orElse(null);
 
-        // セッションがない場合は新規作成して開始
-        if (session == null || session.getCurrentPhase().isInitialPhase()) {
-            startNewSession(userId);
-            
-            if ("記録".equals(text) || "開始".equals(text)) {
-                lineMessageService.replyFlexMessage(replyToken, "症状カテゴリ選択", "SymptomCategoryName.json");
-                return;
-            }
+        // 「開始」または「記録」が入力された場合は、現在のフェーズを問わず強制的にセッションをリセットして初期化する
+        if ("記録".equals(text) || "開始".equals(text)) {
+            startNewSession(userId, session);
+            lineMessageService.replyFlexMessage(replyToken, "症状カテゴリ選択", "SymptomCategoryName.json");
+            return;
+        }
 
-            session = userSessionRepository.findById(userId).get();
+        // セッションがない、または初期フェーズの場合はテキスト入力でデモ進行（開発用）
+        if (session == null || session.getCurrentPhase().isInitialPhase()) {
+            if (session == null) {
+                startNewSession(userId, null);
+                session = userSessionRepository.findById(userId).get();
+            }
             CareRecordDraft draft = getDraft(session);
             
             // とりあえず1つ目の症状IDを3011番（暴言・暴力など）で仮決めして次へ進むデモ
@@ -152,33 +155,40 @@ public class LineWebhookDispatcherService {
         String userId = event.source() != null ? event.source().userId() : null;
         
         log.info("LINEからPostbackイベントを受信しました。ユーザーID: {}, eventId: {}", userId, eventId);
-
         if (userId == null) return;
+
+        UserSession session = userSessionRepository.findById(userId).orElse(null);
 
         // 【第一の盾】冪等性のチェック
         try {
             eventRepository.save(LineWebhookEvent.builder()
                 .eventId(eventId)
                 .userId(userId)
+                .sessionId(session != null ? session.getSessionId() : null)
                 .eventType("postback")
                 .lineTimestamp(OffsetDateTime.ofInstant(java.time.Instant.ofEpochMilli(event.timestamp()), ZoneId.systemDefault()))
                 .status("PROCESSING")
+                .isNew(true)
                 .build());
         } catch (DuplicateKeyException e) {
             log.info("既に処理済みのイベントです。無視して200を返します。eventId: {}", eventId);
             return;
         }
 
-        UserSession session = userSessionRepository.findById(userId)
-            .orElseThrow(() -> new IllegalStateException("セッションが存在しません"));
+        if (session == null) {
+            throw new IllegalStateException("セッションが存在しません");
+        }
 
         String data = event.postback().data();
         Map<String, String> params = parsePostbackData(data);
+        if (event.postback().params() != null) {
+            params.putAll(event.postback().params());
+        }
         String action = params.get("action");
 
         if (action == null) {
             log.warn("actionが指定されていません: {}", data);
-            markEventStatus(eventId, "ERROR");
+            markEventStatus(eventId, "ERROR", session.getSessionId());
             return;
         }
 
@@ -189,7 +199,7 @@ public class LineWebhookDispatcherService {
 
         if (handler == null) {
             log.warn("未知のアクションです: {}", action);
-            markEventStatus(eventId, "ERROR");
+            markEventStatus(eventId, "ERROR", session.getSessionId());
             return;
         }
 
@@ -197,20 +207,25 @@ public class LineWebhookDispatcherService {
         if (!handler.getAllowedPhases().contains(session.getCurrentPhase())) {
             log.warn("現在のフェーズ {} では許可されないアクションです: {}", session.getCurrentPhase(), action);
             reply(event.replyToken(), "現在の状態では無効な操作です。過去のボタンを押していないか確認してください。");
-            markEventStatus(eventId, "ERROR");
+            markEventStatus(eventId, "ERROR", session.getSessionId());
             return;
         }
 
         // 将軍に処理を委譲
         handler.handle(event.replyToken(), session, params);
-
+        //Usersessionに保存
+        CareRecordDraft draft = getDraft(session);
+        saveDraft(session, draft);
         // 戦果の記録
-        markEventStatus(eventId, "COMPLETED");
+        markEventStatus(eventId, "COMPLETED", session.getSessionId());
     }
 
-    private void markEventStatus(String eventId, String status) {
+    private void markEventStatus(String eventId, String status, UUID sessionId) {
         eventRepository.findById(eventId).ifPresent(e -> {
             e.setStatus(status);
+            if (sessionId != null) {
+                e.setSessionId(sessionId);
+            }
             eventRepository.save(e);
         });
     }
@@ -230,16 +245,23 @@ public class LineWebhookDispatcherService {
         return params;
     }
 
-    private void startNewSession(String userId) {
+    private void startNewSession(String userId, UserSession existingSession) {
         CareRecordDraft draft = new CareRecordDraft();
-        UserSession session = UserSession.builder()
-                .userId(userId)
-                .sessionId(UUID.randomUUID())
-                .currentPhase(InputPhase.WAITING_FOR_SYMPTOM_CATEGORY)
-                .tempData(JsonData.of(toJson(draft)))
-                .isNew(true)
-                .build();
-        userSessionRepository.save(session);
+        if (existingSession != null) {
+            existingSession.setSessionId(UUID.randomUUID());
+            existingSession.setCurrentPhase(InputPhase.WAITING_FOR_SYMPTOM_CATEGORY);
+            existingSession.setTempData(JsonData.of(toJson(draft)));
+            userSessionRepository.save(existingSession);
+        } else {
+            UserSession session = UserSession.builder()
+                    .userId(userId)
+                    .sessionId(UUID.randomUUID())
+                    .currentPhase(InputPhase.WAITING_FOR_SYMPTOM_CATEGORY)
+                    .tempData(JsonData.of(toJson(draft)))
+                    .isNew(true)
+                    .build();
+            userSessionRepository.save(session);
+        }
     }
 
     private CareRecordDraft getDraft(UserSession session) {

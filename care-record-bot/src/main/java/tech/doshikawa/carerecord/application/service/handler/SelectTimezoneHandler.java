@@ -18,6 +18,7 @@ public class SelectTimezoneHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
+    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {
@@ -32,6 +33,13 @@ public class SelectTimezoneHandler implements PostbackActionHandler {
     @Override
     public void handle(String replyToken, UserSession session, Map<String, String> params) {
         log.info("Executing SelectTimezoneHandler with params: {}", params);
+        
+        String timezoneCode = params.get("code");
+        if (timezoneCode != null) {
+            sessionHelper.updateDraft(session, draft -> {
+                draft.setTimezone(tech.doshikawa.carerecord.domain.type.TimePeriod.fromCode(timezoneCode));
+            });
+        }
         
         session.setCurrentPhase(InputPhase.WAITING_FOR_DURATION);
         sessionRepository.save(session);

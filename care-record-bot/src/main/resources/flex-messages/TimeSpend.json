@@ -25,7 +25,7 @@
             "action": {
               "type": "postback",
               "label": "🕒 30分まで",
-              "data": "action=select_duration&id=1",
+              "data": "action=select_duration&durationId=1",
               "displayText": "30分まで"
             }
           },
@@ -36,7 +36,7 @@
             "action": {
               "type": "postback",
               "label": "🕒 ２時間程度 ",
-              "data": "action=select_duration&id=2",
+              "data": "action=select_duration&durationId=2",
               "displayText": "２時間程度 "
             }
           }
@@ -54,7 +54,7 @@
             "action": {
               "type": "postback",
               "label": "🕒 半日",
-              "data": "action=select_duration&id=3",
+              "data": "action=select_duration&durationId=3",
               "displayText": "半日"
             }
           },
@@ -65,7 +65,7 @@
             "action": {
               "type": "postback",
               "label": "🕒 １日以上",
-              "data": "action=select_duration&id=4",
+              "data": "action=select_duration&durationId=4",
               "displayText": "1日以上"
             }
           }

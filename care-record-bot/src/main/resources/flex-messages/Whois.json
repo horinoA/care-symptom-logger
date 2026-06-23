@@ -25,7 +25,7 @@
             "action": {
               "type": "postback",
               "label": "👵 母",
-              "data": "action=select_who&id=202",
+              "data": "action=select_who&targetId=202",
               "displayText": "母"
             }
           },
@@ -36,7 +36,7 @@
             "action": {
               "type": "postback",
               "label": "👴 父",
-              "data": "action=select_who&id=201",
+              "data": "action=select_who&targetId=201",
               "displayText": "父"
             }
           }
