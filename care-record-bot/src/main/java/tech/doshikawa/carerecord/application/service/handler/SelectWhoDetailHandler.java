@@ -7,6 +7,7 @@ import tech.doshikawa.carerecord.domain.entity.UserSession;
 import tech.doshikawa.carerecord.domain.repository.UserSessionRepository;
 import tech.doshikawa.carerecord.domain.type.InputPhase;
 import tech.doshikawa.carerecord.application.service.LineMessageService;
+import tech.doshikawa.carerecord.application.dto.CareRecordDraft;
 
 import java.util.Map;
 import java.util.Set;
@@ -41,9 +42,23 @@ public class SelectWhoDetailHandler implements PostbackActionHandler {
             });
         }
         
-        session.setCurrentPhase(InputPhase.WAITING_FOR_TO_WHO);
+        CareRecordDraft draft = sessionHelper.getDraft(session);
+        boolean hasTarget = draft.hasTroubleSymptom();
+        
+        String jsonFileName;
+        String altText;
+        if (hasTarget) {
+            session.setCurrentPhase(InputPhase.WAITING_FOR_TO_WHO);
+            jsonFileName = "ToWho.json";
+            altText = "誰に対しての行動か選択";
+        } else {
+            session.setCurrentPhase(InputPhase.WAITING_FOR_SAVE_OR_MEMO);
+            jsonFileName = "MemoYN.json";
+            altText = "メモ有無選択";
+        }
+        
         sessionRepository.save(session);
         
-        lineMessageService.replyFlexMessage(replyToken, "誰に対しての行動か選択", "ToWho.json");
+        lineMessageService.replyFlexMessage(replyToken, altText, jsonFileName);
     }
 }

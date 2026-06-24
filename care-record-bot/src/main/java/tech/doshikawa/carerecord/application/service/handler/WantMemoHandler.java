@@ -18,7 +18,6 @@ public class WantMemoHandler implements PostbackActionHandler {
 
     private final UserSessionRepository sessionRepository;
     private final LineMessageService lineMessageService;
-    private final tech.doshikawa.carerecord.application.service.UserSessionHelper sessionHelper;
 
     @Override
     public boolean supports(String action) {
@@ -37,6 +36,6 @@ public class WantMemoHandler implements PostbackActionHandler {
         session.setCurrentPhase(InputPhase.WAITING_FOR_MEMO_TEXT);
         sessionRepository.save(session);
         
-        lineMessageService.replyText(replyToken, "メモ内容をテキストで入力してください。");
+        lineMessageService.replyText(replyToken, "メモ内容をテキストで入力してください。(1000文字まで)");
     }
 }

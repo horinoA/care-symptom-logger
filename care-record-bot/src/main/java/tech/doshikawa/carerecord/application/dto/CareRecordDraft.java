@@ -51,4 +51,16 @@ public class CareRecordDraft {
                 .symptomIds(this.symptomIds)
                 .build();
     }
+
+    /**
+     * 「困った」カテゴリー（3000番台）の症状が選択されているかを判定する
+     */
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public boolean hasTroubleSymptom() {
+        if (this.symptomIds == null || this.symptomIds.isEmpty()) {
+            throw new IllegalStateException("症状が一つも選択されていない状態で現在のフェーズに到達いたしました。");
+        }
+        return this.symptomIds.stream()
+                .anyMatch(id -> id >= 3000 && id <= 3999);
+    }
 }

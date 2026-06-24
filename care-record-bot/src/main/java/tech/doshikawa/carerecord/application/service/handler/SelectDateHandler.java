@@ -44,6 +44,10 @@ public class SelectDateHandler implements PostbackActionHandler {
         session.setCurrentPhase(InputPhase.WAITING_FOR_TIMEZONE);
         sessionRepository.save(session);
         
-        lineMessageService.replyFlexMessage(replyToken, "時間帯選択", "Timezone.json");
+        if (dateStr != null) {
+            lineMessageService.replyTextAndFlexMessage(replyToken, "【日付】 " + dateStr, "時間帯選択", "Timezone.json");
+        } else {
+            lineMessageService.replyFlexMessage(replyToken, "時間帯選択", "Timezone.json");
+        }
     }
 }

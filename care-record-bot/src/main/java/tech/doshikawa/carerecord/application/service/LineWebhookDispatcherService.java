@@ -213,7 +213,7 @@ public class LineWebhookDispatcherService {
 
         // 将軍に処理を委譲
         handler.handle(event.replyToken(), session, params);
-        //Usersessionに保存
+        //Usersessionに保存_AIじゃなくてわいが書いた
         CareRecordDraft draft = getDraft(session);
         saveDraft(session, draft);
         // 戦果の記録

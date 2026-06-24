@@ -2,7 +2,6 @@ package tech.doshikawa.carerecord.application.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import tech.doshikawa.carerecord.application.dto.CareRecordDraft;

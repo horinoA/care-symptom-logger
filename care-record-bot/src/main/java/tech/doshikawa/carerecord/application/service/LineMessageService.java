@@ -44,6 +44,21 @@ public class LineMessageService {
         }
     }
 
+    public void replyTextAndFlexMessage(String replyToken, String text, String altText, String jsonFileName) {
+        try {
+            ClassPathResource resource = new ClassPathResource("flex-messages/" + jsonFileName);
+            try (InputStream is = resource.getInputStream()) {
+                FlexContainer container = objectMapper.readValue(is, FlexContainer.class);
+                FlexMessage flexMessage = new FlexMessage(altText, container);
+                TextMessage textMessage = new TextMessage(text);
+                reply(replyToken, List.of(textMessage, flexMessage));
+            }
+        } catch (Exception e) {
+            log.error("テキストとFlex Messageの読み込み・送信に失敗しました: " + jsonFileName, e);
+            replyText(replyToken, "システムエラーが発生しました。");
+        }
+    }
+
     private void reply(String replyToken, List<Message> messages) {
         try {
             messagingApiClient.replyMessage(new ReplyMessageRequest(replyToken, messages, false)).get();
