@@ -7,16 +7,14 @@ import com.linecorp.bot.messaging.model.TextMessage;
 import com.linecorp.bot.messaging.model.ReplyMessageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.doshikawa.carerecord.application.dto.CareRecordCreateCommand;
 import tech.doshikawa.carerecord.application.dto.CareRecordDraft;
 import tech.doshikawa.carerecord.domain.entity.UserSession;
 import tech.doshikawa.carerecord.domain.repository.UserSessionRepository;
 import tech.doshikawa.carerecord.domain.type.InputPhase;
 import tech.doshikawa.carerecord.domain.type.JsonData;
-import tech.doshikawa.carerecord.domain.type.TimePeriod;
-import tech.doshikawa.carerecord.domain.type.TimeSpend;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -26,6 +24,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.dao.DuplicateKeyException;
@@ -40,11 +39,13 @@ import com.linecorp.bot.webhook.model.PostbackEvent;
 public class LineWebhookDispatcherService {
 
     private final UserSessionRepository userSessionRepository;
-    private final CareRecordApplicationService careRecordService;
     private final MessagingApiClient messagingApiClient;
     private final LineWebhookEventRepository eventRepository;
     private final List<PostbackActionHandler> actionHandlers;
     private final LineMessageService lineMessageService;
+    private final UserSessionRepository sessionRepository;
+    private final UserSessionHelper sessionHelper;
+    private final MessageSource messageSource;
     
     // SpringのDIに依存せず、独自にObjectMapperを定義
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -64,85 +65,40 @@ public class LineWebhookDispatcherService {
         // 「開始」または「記録」が入力された場合は、現在のフェーズを問わず強制的にセッションをリセットして初期化する
         if ("記録".equals(text) || "開始".equals(text)) {
             startNewSession(userId, session);
-            lineMessageService.replyFlexMessage(replyToken, "症状カテゴリ選択", "SymptomCategoryName.json");
+            
+            // 例外による反乱を防ぐため、第三引数に「デフォルトのメッセージ」を設定して強固な防壁を築く
+            String fallbackMessage = "日々の介護、誠にお疲れ様です。\n記録したい症状のカテゴリを選択してください。";
+            String introText = messageSource.getMessage("reply.intro.category", null, fallbackMessage, Locale.JAPAN);
+            log.info(introText);
+            lineMessageService.replyTextAndFlexMessage(replyToken, introText, "症状カテゴリ選択", "SymptomCategoryName.json");
             return;
         }
 
-        // セッションがない、または初期フェーズの場合はテキスト入力でデモ進行（開発用）
+        // セッションがない、または初期フェーズの場合は記録を開始させる
         if (session == null || session.getCurrentPhase().isInitialPhase()) {
-            if (session == null) {
-                startNewSession(userId, null);
-                session = userSessionRepository.findById(userId).get();
-            }
-            CareRecordDraft draft = getDraft(session);
-            
-            // とりあえず1つ目の症状IDを3011番（暴言・暴力など）で仮決めして次へ進むデモ
-            draft.setSymptomIds(List.of(3011));
-            saveDraft(session, draft);
-            
-            session.setCurrentPhase(InputPhase.WAITING_FOR_WHO);
-            userSessionRepository.save(session);
-            
-            reply(replyToken, "症状を受け付けました！\n次に対象者（Who）を「who=対象者ID」の形式で送ってください。\n(例: who=201)");
+            reply(replyToken,"記録を開始するには「開始」または「記録」とご入力ください。");
             return;
         }
 
+        //現在どのフェーズ（InputPhase）か取得
         InputPhase phase = session.getCurrentPhase();
-        CareRecordDraft draft = getDraft(session);
 
-        if (phase == InputPhase.WAITING_FOR_WHO && text.startsWith("who=")) {
-            draft.setTargetId(Integer.parseInt(text.replace("who=", "")));
-            saveDraft(session, draft);
-            
-            session.setCurrentPhase(InputPhase.WAITING_FOR_DATE);
-            userSessionRepository.save(session);
-            
-            reply(replyToken, "対象者を記録しました。\n次に発生日時を「date=2026-06-14T10:00:00+09:00」の形式で送ってください。");
-            return;
-        }
+        //textはLINEから送られたテキストなので、分岐追加する際は以下の感じで分岐処理を書く
+        //if (phase == InputPhase.WAITING_FOR_WHO && text.startsWith("who=")) {
 
-        if (phase == InputPhase.WAITING_FOR_DATE && text.startsWith("date=")) {
-            draft.setOnsetAt(OffsetDateTime.parse(text.replace("date=", "")));
-            saveDraft(session, draft);
-            
-            session.setCurrentPhase(InputPhase.WAITING_FOR_TIMEZONE);
-            userSessionRepository.save(session);
-            
-            reply(replyToken, "日時を記録しました。\n次に時間帯を「time=morning」の形式で送ってください。(morning, noon, evening, night)");
-            return;
-        }
-
-        if (phase == InputPhase.WAITING_FOR_TIMEZONE && text.startsWith("time=")) {
-            draft.setTimezone(TimePeriod.fromCode(text.replace("time=", "")));
-            saveDraft(session, draft);
-            
-            session.setCurrentPhase(InputPhase.WAITING_FOR_DURATION);
-            userSessionRepository.save(session);
-            
-            reply(replyToken, "時間帯を記録しました。\n次に経過時間を「duration=1」の形式で送ってください。(1: 30分, 2: 2時間, 3: 半日, 4: 1日以上)");
-            return;
-        }
-
-        if (phase == InputPhase.WAITING_FOR_DURATION && text.startsWith("duration=")) {
-            draft.setDuration(TimeSpend.fromId(text.replace("duration=", "")));
-            saveDraft(session, draft);
-            
-            session.setCurrentPhase(InputPhase.WAITING_FOR_MEMO_TEXT);
-            userSessionRepository.save(session);
-            
-            reply(replyToken, "経過時間を記録しました。\n最後にメモを入力してください。");
-            return;
-        }
-
+        //メモ入力状態からテキストが入力された
         if (phase == InputPhase.WAITING_FOR_MEMO_TEXT) {
-            draft.setMemo(text);
+            log.info("Executing SelecthandleTextMessage_WAITING_FOR_MEMO_TEXT: {}", text);
             
-            // 完了！DBに保存
-            CareRecordCreateCommand command = draft.toCommand(userId);
-            careRecordService.createCareRecord(command);
+            if (text != null) {
+                sessionHelper.updateDraft(session, draft -> {
+                    draft.setMemo(text);
+                });
+            }
             
-            userSessionRepository.deleteById(userId);
-            reply(replyToken, "介護記録の保存が完了しました！お疲れ様でした。");
+            session.setCurrentPhase(InputPhase.WAITING_FOR_FINAL_CONFIRM);
+            sessionRepository.save(session);
+            lineMessageService.replyFlexMessage(replyToken, "メモ付きで保存するか", "MemoAddYN.json");
             return;
         }
 
