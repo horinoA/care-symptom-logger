@@ -24,7 +24,8 @@
           "label": "同じことを何度も聞く",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4011",
           "displayText": "同じことを何度も聞く"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -35,7 +36,8 @@
           "label": "約束を忘れる",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4012",
           "displayText": "約束を忘れる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -46,7 +48,8 @@
           "label": "頻繁に探し物をしている",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4013",
           "displayText": "頻繁に探し物をしている"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -57,7 +60,8 @@
           "label": "食事したこと自体を忘れる",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4014",
           "displayText": "食事したこと自体を忘れる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -68,7 +72,8 @@
           "label": "同じものを何度も買う",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4015",
           "displayText": "同じものを何度も買う"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -79,7 +84,8 @@
           "label": "過去の経歴を思い出せない",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4016",
           "displayText": "過去の経歴を思い出せない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -90,7 +96,8 @@
           "label": "家族の顔や名前がわからない",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4017",
           "displayText": "家族の顔や名前がわからない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -101,7 +108,8 @@
           "label": "会話で「あれ・それ」が増えた",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4018",
           "displayText": "会話で「あれ・それ」が増えた"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -112,7 +120,8 @@
           "label": "言葉が出ない・迷いながら話す",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4019",
           "displayText": "言葉が出ない・迷いながら話す"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -123,7 +132,8 @@
           "label": "話のつじつまが合わない",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4020",
           "displayText": "話のつじつまが合わない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -134,7 +144,8 @@
           "label": "相手の言葉を理解できない",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4021",
           "displayText": "相手の言葉を理解できない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -145,7 +156,8 @@
           "label": "作り話や嘘が増えた",
           "data": "action=select_symptom_detail&categoryId=40&symptomId=4022",
           "displayText": "作り話や嘘が増えた"
-        }
+        },
+        "color": "#DDEEDC"
       }
     ]
   },

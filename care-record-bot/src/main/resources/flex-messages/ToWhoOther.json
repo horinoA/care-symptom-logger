@@ -33,7 +33,8 @@
               "label": "🩺 医療従事者 (医師・看護師)",
               "data": "action=select_to_who_detail&toWhoId=903",
               "displayText": "医療従事者"
-            }
+            },
+            "color": "#DDEEDC"
           },
           {
             "type": "box",
@@ -46,10 +47,11 @@
                 "height": "sm",
                 "action": {
                   "type": "postback",
-                  "label": "🧑 配偶者 (夫・妻)",
+                  "label": "🧑 夫・妻",
                   "data": "action=select_to_who_detail&toWhoId=302",
-                  "displayText": "配偶者"
-                }
+                  "displayText": "夫・妻"
+                },
+                "color": "#DDEEDC"
               },
               {
                 "type": "button",
@@ -57,41 +59,37 @@
                 "height": "sm",
                 "action": {
                   "type": "postback",
-                  "label": "👶 子ども (息子・娘)",
+                  "label": "👶 息子・娘",
                   "data": "action=select_to_who_detail&toWhoId=01",
-                  "displayText": "子ども"
-                }
+                  "displayText": "息子・娘"
+                },
+                "color": "#DDEEDC"
               }
             ]
           },
           {
-            "type": "box",
-            "layout": "horizontal",
-            "spacing": "sm",
-            "contents": [
-              {
-                "type": "button",
-                "style": "secondary",
-                "height": "sm",
-                "action": {
-                  "type": "postback",
-                  "label": "👥 兄弟・姉妹 (実方)",
-                  "data": "action=select_to_who_detail&toWhoId=303",
-                  "displayText": "兄弟・姉妹"
-                }
-              },
-              {
-                "type": "button",
-                "style": "secondary",
-                "height": "sm",
-                "action": {
-                  "type": "postback",
-                  "label": "👥 義理の兄弟姉妹",
-                  "data": "action=select_to_who_detail&toWhoId=304",
-                  "displayText": "義理の兄弟姉妹"
-                }
-              }
-            ]
+            "type": "button",
+            "style": "secondary",
+            "height": "sm",
+            "action": {
+              "type": "postback",
+              "label": "👥 実兄弟姉妹",
+              "data": "action=select_to_who_detail&toWhoId=303",
+              "displayText": "実兄弟姉妹"
+            },
+            "color": "#DDEEDC"
+          },
+          {
+            "type": "button",
+            "style": "secondary",
+            "height": "sm",
+            "action": {
+              "type": "postback",
+              "label": "👥 義理兄弟姉妹",
+              "data": "action=select_to_who_detail&toWhoId=304",
+              "displayText": "義理兄弟姉妹"
+            },
+            "color": "#DDEEDC"
           },
           {
             "type": "box",
@@ -107,7 +105,8 @@
                   "label": "🧒 孫",
                   "data": "action=select_to_who_detail&toWhoId=501",
                   "displayText": "孫"
-                }
+                },
+                "color": "#DDEEDC"
               },
               {
                 "type": "button",
@@ -118,7 +117,8 @@
                   "label": "👥 その他親族",
                   "data": "action=select_to_who_detail&toWhoId=899",
                   "displayText": "その他親族"
-                }
+                },
+                "color": "#DDEEDC"
               }
             ]
           },
@@ -131,7 +131,8 @@
               "label": "❓ その他",
               "data": "action=select_to_who_detail&toWhoId=991",
               "displayText": "その他"
-            }
+            },
+            "color": "#DDEEDC"
           }
         ]
       }
@@ -173,7 +174,8 @@
                   "label": "👴 父",
                   "data": "action=select_to_who_detail&toWhoId=201",
                   "displayText": "父"
-                }
+                },
+                "color": "#DDEEDC"
               },
               {
                 "type": "button",
@@ -184,7 +186,8 @@
                   "label": "👵 母",
                   "data": "action=select_to_who_detail&toWhoId=202",
                   "displayText": "母"
-                }
+                },
+                "color": "#DDEEDC"
               }
             ]
           },
@@ -202,7 +205,8 @@
                   "label": "👴 義父",
                   "data": "action=select_to_who_detail&toWhoId=203",
                   "displayText": "義父"
-                }
+                },
+                "color": "#DDEEDC"
               },
               {
                 "type": "button",
@@ -213,7 +217,8 @@
                   "label": "👵 義母",
                   "data": "action=select_to_who_detail&toWhoId=204",
                   "displayText": "義母"
-                }
+                },
+                "color": "#DDEEDC"
               }
             ]
           },
@@ -231,7 +236,8 @@
                   "label": "👴 祖父",
                   "data": "action=select_to_who_detail&toWhoId=101",
                   "displayText": "祖父"
-                }
+                },
+                "color": "#DDEEDC"
               },
               {
                 "type": "button",
@@ -242,7 +248,8 @@
                   "label": "👵 祖母",
                   "data": "action=select_to_who_detail&toWhoId=102",
                   "displayText": "祖母"
-                }
+                },
+                "color": "#DDEEDC"
               }
             ]
           },
@@ -260,7 +267,8 @@
                   "label": "👴 義祖父",
                   "data": "action=select_to_who_detail&toWhoId=103",
                   "displayText": "義祖父"
-                }
+                },
+                "color": "#DDEEDC"
               },
               {
                 "type": "button",
@@ -271,7 +279,8 @@
                   "label": "👵 義祖母",
                   "data": "action=select_to_who_detail&toWhoId=104",
                   "displayText": "義祖母"
-                }
+                },
+                "color": "#DDEEDC"
               }
             ]
           }

@@ -24,7 +24,8 @@
           "label": "暴言や暴力を振るう",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3011",
           "displayText": "暴言や暴力を振るう"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -35,7 +36,8 @@
           "label": "異常な回数や内容の電話や手紙",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3012",
           "displayText": "異常な回数や内容の電話や手紙"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -46,7 +48,8 @@
           "label": "警察や市役所に無断連絡",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3013",
           "displayText": "警察や市役所に無断連絡"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -57,7 +60,8 @@
           "label": "詐欺の被害に遭う",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3014",
           "displayText": "詐欺の被害に遭う"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -68,7 +72,8 @@
           "label": "徘徊する",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3015",
           "displayText": "徘徊する"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -79,7 +84,8 @@
           "label": "物が盗まれたと誤解する",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3016",
           "displayText": "物が盗まれたと誤解する"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -90,7 +96,8 @@
           "label": "食べ物以外のものを食べる",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3017",
           "displayText": "食べ物以外のものを食べる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -101,7 +108,8 @@
           "label": "便の処理が不適切",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3018",
           "displayText": "便の処理が不適切"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -112,7 +120,8 @@
           "label": "性的な行動をとる",
           "data": "action=select_symptom_detail&categoryId=30&symptomId=3019",
           "displayText": "性的な行動をとる"
-        }
+        },
+        "color": "#DDEEDC"
       }
     ]
   },

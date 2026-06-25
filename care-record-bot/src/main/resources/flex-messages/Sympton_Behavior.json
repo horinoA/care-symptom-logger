@@ -24,7 +24,8 @@
           "label": "家事がうまくできない",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5011",
           "displayText": "家事がうまくできない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -35,7 +36,8 @@
           "label": "服をうまく着られない",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5012",
           "displayText": "服をうまく着られない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -46,7 +48,8 @@
           "label": "食事や薬をこぼす・落とす",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5013",
           "displayText": "食事や薬をこぼす・落とす"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -57,7 +60,8 @@
           "label": "トイレや風呂掃除が雑",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5014",
           "displayText": "トイレや風呂掃除が雑"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -68,7 +72,8 @@
           "label": "外出が極端に減った",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5015",
           "displayText": "外出が極端に減った"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -79,7 +84,8 @@
           "label": "寝不足で疲れている",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5016",
           "displayText": "寝不足で疲れている"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -90,7 +96,8 @@
           "label": "ゴミを捨てない・溜める",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5017",
           "displayText": "ゴミを捨てない・溜める"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -101,7 +108,8 @@
           "label": "お風呂に入りたがらない",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5018",
           "displayText": "お風呂に入りたがらない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -112,7 +120,8 @@
           "label": "食事や薬を拒否する",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5019",
           "displayText": "食事や薬を拒否する"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -123,7 +132,8 @@
           "label": "すぐに家に帰りたがる",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5020",
           "displayText": "すぐに家に帰りたがる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -134,7 +144,8 @@
           "label": "詐欺に引っかかる",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5021",
           "displayText": "詐欺に引っかかる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -145,7 +156,8 @@
           "label": "物を盗む（万引き等）",
           "data": "action=select_symptom_detail&categoryId=50&symptomId=5022",
           "displayText": "物を盗む（万引き等）"
-        }
+        },
+        "color": "#DDEEDC"
       }
     ]
   },

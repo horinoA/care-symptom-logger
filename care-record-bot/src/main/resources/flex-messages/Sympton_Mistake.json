@@ -24,7 +24,8 @@
           "label": "日付がわからない",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6011",
           "displayText": "日付がわからない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -35,7 +36,8 @@
           "label": "時計が読めない",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6012",
           "displayText": "時計が読めない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -46,7 +48,8 @@
           "label": "朝と夜の区別がつかない",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6013",
           "displayText": "朝と夜の区別がつかない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -57,7 +60,8 @@
           "label": "季節に合わない服を着る",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6014",
           "displayText": "季節に合わない服を着る"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -68,7 +72,8 @@
           "label": "よく物にぶつかる",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6015",
           "displayText": "よく物にぶつかる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -79,7 +84,8 @@
           "label": "同じ場所をうろうろする",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6016",
           "displayText": "同じ場所をうろうろする"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -90,7 +96,8 @@
           "label": "トイレや風呂の場所を間違える",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6017",
           "displayText": "トイレや風呂の場所を間違える"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -101,7 +108,8 @@
           "label": "極端に暑がる・寒がる・かゆがる",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6018",
           "displayText": "極端に暑がる・寒がる・かゆがる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -112,7 +120,8 @@
           "label": "家の近所で迷う",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6019",
           "displayText": "家の近所で迷う"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -123,7 +132,8 @@
           "label": "外出して帰れなくなる",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6020",
           "displayText": "外出して帰れなくなる"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -134,7 +144,8 @@
           "label": "今いる場所がわからない",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6021",
           "displayText": "今いる場所がわからない"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -145,7 +156,8 @@
           "label": "家族や友人を間違える",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6022",
           "displayText": "家族や友人を間違える"
-        }
+        },
+        "color": "#DDEEDC"
       },
       {
         "type": "button",
@@ -156,7 +168,8 @@
           "label": "いない人が見える・声が聞こえる",
           "data": "action=select_symptom_detail&categoryId=60&symptomId=6023",
           "displayText": "いない人が見える・声が聞こえる"
-        }
+        },
+        "color": "#DDEEDC"
       }
     ]
   },
