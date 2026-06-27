@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.context.MessageSource;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -21,6 +23,7 @@ import java.util.List;
 public class LineMessageService {
 
     private final MessagingApiClient messagingApiClient;
+    private final MessageSource messageSource;
 
     // SpringのDIに依存せず、独自にObjectMapperを定義
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -28,6 +31,11 @@ public class LineMessageService {
 
     public void replyText(String replyToken, String text) {
         reply(replyToken, List.of(new TextMessage(text)));
+    }
+
+    public void replyTextByCode(String replyToken, String code, Object... args) {
+        String text = messageSource.getMessage(code, args, code, Locale.JAPAN);
+        replyText(replyToken, text);
     }
 
     public void replyFlexMessage(String replyToken, String altText, String jsonFileName) {
@@ -57,6 +65,11 @@ public class LineMessageService {
             log.error("テキストとFlex Messageの読み込み・送信に失敗しました: " + jsonFileName, e);
             replyText(replyToken, "システムエラーが発生しました。");
         }
+    }
+
+    public void replyTextAndFlexMessageByCode(String replyToken, String textCode, Object[] args, String altText, String jsonFileName) {
+        String text = messageSource.getMessage(textCode, args, textCode, Locale.JAPAN);
+        replyTextAndFlexMessage(replyToken, text, altText, jsonFileName);
     }
 
     private void reply(String replyToken, List<Message> messages) {

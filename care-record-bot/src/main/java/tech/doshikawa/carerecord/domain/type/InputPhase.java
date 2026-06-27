@@ -55,7 +55,7 @@ public enum InputPhase {
         try {
             return InputPhase.valueOf(phaseName);
         } catch (NullPointerException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("問答無用でエラー: 未知のフェーズ名です -> " + phaseName, e);
+            throw new IllegalArgumentException("error.enum.input_phase.unknown", e);
         }
     }
 

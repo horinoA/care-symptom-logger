@@ -34,6 +34,6 @@ public class CancelRecordHandler implements PostbackActionHandler {
         log.info("Executing CancelRecordHandler");
         
         sessionRepository.deleteById(session.getUserId());
-        lineMessageService.replyText(replyToken, "記録をキャンセルしました。「開始」と送ると最初からやり直せます。");
+        lineMessageService.replyTextByCode(replyToken, "reply.record.cancel");
     }
 }

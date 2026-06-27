@@ -34,6 +34,6 @@ public enum TimePeriod {
                 return period;
             }
         }
-        throw new IllegalArgumentException("問答無用でエラー: 未知の時間帯コードです -> " + code);
+        throw new IllegalArgumentException("error.enum.time_period.unknown");
     }
 }

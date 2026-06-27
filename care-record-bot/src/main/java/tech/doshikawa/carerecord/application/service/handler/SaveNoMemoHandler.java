@@ -36,7 +36,9 @@ public class SaveNoMemoHandler implements PostbackActionHandler {
         
         // TODO: DBへの保存処理 (CareRecordApplicationService.createCareRecord() の呼び出し)
         
+        // 実際の業務処理としては、ここで care_records 等への最終永続化処理を呼び出す
+        
         sessionRepository.deleteById(session.getUserId());
-        lineMessageService.replyText(replyToken, "メモなしで記録を保存しました。お疲れ様でした！");
+        lineMessageService.replyTextByCode(replyToken, "reply.record.saved.nomemo");
     }
 }

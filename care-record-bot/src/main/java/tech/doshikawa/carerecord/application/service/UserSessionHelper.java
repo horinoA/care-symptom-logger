@@ -28,7 +28,7 @@ public class UserSessionHelper {
             return objectMapper.readValue(session.getTempData().getValue(), CareRecordDraft.class);
         } catch (JsonProcessingException e) {
             log.error("JSONパースエラー", e);
-            throw new RuntimeException("セッションデータの復元に失敗しました", e);
+            throw new RuntimeException("error.session.restore", e);
         }
     }
 
@@ -40,7 +40,7 @@ public class UserSessionHelper {
             session.setTempData(JsonData.of(objectMapper.writeValueAsString(draft)));
         } catch (JsonProcessingException e) {
             log.error("JSONシリアライズエラー", e);
-            throw new RuntimeException("セッションデータの保存に失敗しました", e);
+            throw new RuntimeException("error.session.save", e);
         }
     }
 

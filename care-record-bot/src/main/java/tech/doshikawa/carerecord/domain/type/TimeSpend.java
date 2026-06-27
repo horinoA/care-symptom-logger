@@ -34,6 +34,6 @@ public enum TimeSpend {
                 return timeSpend;
             }
         }
-        throw new IllegalArgumentException("問答無用でエラー: 未知の所要時間IDです -> " + id);
+        throw new IllegalArgumentException("error.enum.time_spend.unknown");
     }
 }

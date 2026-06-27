@@ -58,7 +58,7 @@ public class CareRecordDraft {
     @com.fasterxml.jackson.annotation.JsonIgnore
     public boolean hasTroubleSymptom() {
         if (this.symptomIds == null || this.symptomIds.isEmpty()) {
-            throw new IllegalStateException("症状が一つも選択されていない状態で現在のフェーズに到達いたしました。");
+            throw new IllegalStateException("error.draft.nosymptom");
         }
         return this.symptomIds.stream()
                 .anyMatch(id -> id >= 3000 && id <= 3999);

@@ -56,7 +56,7 @@ public class LineWebhookDispatcherService {
 
         if ("リセット".equals(text)) {
             userSessionRepository.deleteById(userId);
-            reply(replyToken, "セッションをリセットしました。最初からやり直してください。（「開始」と送る等）");
+            lineMessageService.replyTextByCode(replyToken, "reply.session.reset");
             return;
         }
 
@@ -74,9 +74,9 @@ public class LineWebhookDispatcherService {
             return;
         }
 
-        // セッションがない、または初期フェーズの場合は記録を開始させる
+        // セッションがない、または初期フェーズの場合はテキスト入力でデモ進行（開発用）
         if (session == null || session.getCurrentPhase().isInitialPhase()) {
-            reply(replyToken,"記録を開始するには「開始」または「記録」とご入力ください。");
+            lineMessageService.replyTextByCode(replyToken, "reply.prompt.start");
             return;
         }
 
@@ -102,7 +102,7 @@ public class LineWebhookDispatcherService {
             return;
         }
 
-        reply(replyToken, "現在のフェーズ（" + phase + "）に合致しない入力です。「リセット」と送ると最初からやり直せます。");
+        lineMessageService.replyTextByCode(replyToken, "reply.error.invalid.phase", phase.toString());
     }
 
     @Transactional
@@ -132,7 +132,7 @@ public class LineWebhookDispatcherService {
         }
 
         if (session == null) {
-            throw new IllegalStateException("セッションが存在しません");
+            throw new IllegalStateException("error.session.notfound");
         }
 
         String data = event.postback().data();
@@ -162,7 +162,7 @@ public class LineWebhookDispatcherService {
         // 【第二の盾】フェーズチェック
         if (!handler.getAllowedPhases().contains(session.getCurrentPhase())) {
             log.warn("現在のフェーズ {} では許可されないアクションです: {}", session.getCurrentPhase(), action);
-            reply(event.replyToken(), "現在の状態では無効な操作です。過去のボタンを押していないか確認してください。");
+            lineMessageService.replyTextByCode(event.replyToken(), "reply.error.invalid.operation");
             markEventStatus(eventId, "ERROR", session.getSessionId());
             return;
         }
@@ -224,7 +224,7 @@ public class LineWebhookDispatcherService {
         try {
             return objectMapper.readValue(session.getTempData().getValue(), CareRecordDraft.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("JSONパースエラー", e);
+            throw new RuntimeException("error.json.parse", e);
         }
     }
 
@@ -236,7 +236,7 @@ public class LineWebhookDispatcherService {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("JSONシリアライズエラー", e);
+            throw new RuntimeException("error.json.serialize", e);
         }
     }
 

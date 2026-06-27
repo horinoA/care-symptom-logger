@@ -39,14 +39,12 @@ public class SelectDateHandler implements PostbackActionHandler {
             sessionHelper.updateDraft(session, draft -> {
                 draft.setOnsetAt(java.time.OffsetDateTime.parse(dateStr + "T00:00:00+09:00"));
             });
-        }
-        
-        session.setCurrentPhase(InputPhase.WAITING_FOR_TIMEZONE);
-        sessionRepository.save(session);
-        
-        if (dateStr != null) {
-            lineMessageService.replyTextAndFlexMessage(replyToken, "【日付】 " + dateStr, "時間帯選択", "Timezone.json");
+            session.setCurrentPhase(InputPhase.WAITING_FOR_TIMEZONE);
+            sessionRepository.save(session);
+            lineMessageService.replyTextAndFlexMessageByCode(replyToken, "reply.date.selected", new Object[]{dateStr}, "時間帯選択", "Timezone.json");
         } else {
+            session.setCurrentPhase(InputPhase.WAITING_FOR_TIMEZONE);
+            sessionRepository.save(session);
             lineMessageService.replyFlexMessage(replyToken, "時間帯選択", "Timezone.json");
         }
     }
