@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import tech.doshikawa.carerecord.application.dto.CareRecordCreateCommand;
 import tech.doshikawa.carerecord.common.exception.NotFoundMasterExceprion;
 import tech.doshikawa.carerecord.common.util.SnowflakeIdGenerator;
@@ -13,10 +14,14 @@ import tech.doshikawa.carerecord.domain.entity.CareRecordDetail;
 import tech.doshikawa.carerecord.domain.repository.CareRecordRepository;
 import tech.doshikawa.carerecord.domain.repository.PeopleCareRepository;
 import tech.doshikawa.carerecord.domain.repository.SymptomNameRepository;
+import tech.doshikawa.carerecord.domain.type.UserValidationConstraints;
 
 import java.time.OffsetDateTime;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.context.MessageSource;
 
 /**
  * 介護記録のユースケース（登録・更新・検索など）を担当するApplication Service
@@ -30,6 +35,7 @@ public class CareRecordApplicationService {
     private final PeopleCareRepository peopleCareRepository;
     private final SymptomNameRepository symptomNameRepository;
     private final SnowflakeIdGenerator idGenerator;
+    private final MessageSource messageSource;
 
     /**
      * 介護記録を新規登録します。
@@ -57,6 +63,12 @@ public class CareRecordApplicationService {
                 log.warn("指定された症状マスタが存在しません: {}", symptomId);
                 throw new NotFoundMasterExceprion("error.carerecord.symptom.notfound");
             }
+        }
+
+        //メモが入力済みで、文字数制限を超える場合はエラー
+        if (command.getMemo() != null && command.getMemo().length() > UserValidationConstraints.MAX_COMMENT_LENGTH){
+            String errorMsg = messageSource.getMessage("validation.carerecord.memo.size", new Object[]{UserValidationConstraints.MAX_COMMENT_LENGTH_STR}, Locale.JAPAN);
+            throw new IllegalArgumentException(errorMsg);
         }
 
         // 3. Entityの生成とID採番（SnowflakeId）

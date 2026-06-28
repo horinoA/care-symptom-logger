@@ -39,14 +39,23 @@ public class CareRecordDraft {
     
     // 完了時に登録用のCommandに変換するメソッド
     public CareRecordCreateCommand toCommand(String userId) {
+        OffsetDateTime actualOnsetAt = this.onsetAt;
+        OffsetDateTime calculatedRemittedAt = OffsetDateTime.now();
+
+        if (this.onsetAt != null && this.timezone != null && this.duration != null) {
+            actualOnsetAt = this.onsetAt.withOffsetSameInstant(java.time.ZoneOffset.ofHours(9))
+                                        .with(this.timezone.getStartTime());
+            calculatedRemittedAt = actualOnsetAt.plus(this.duration.getDurationAmount());
+        }
+
         return CareRecordCreateCommand.builder()
                 .userId(userId)
                 .targetId(this.targetId)
                 .toWhoId(this.toWhoId)
-                .onsetAt(this.onsetAt)
+                .onsetAt(actualOnsetAt)
                 .timezone(this.timezone)
                 .duration(this.duration)
-                .remittedAt(OffsetDateTime.now()) // 完了時点を落ち着いた日時とする
+                .remittedAt(calculatedRemittedAt)
                 .memo(this.memo)
                 .symptomIds(this.symptomIds)
                 .build();

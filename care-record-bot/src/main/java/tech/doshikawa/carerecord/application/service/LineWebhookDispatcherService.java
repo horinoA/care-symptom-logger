@@ -15,6 +15,7 @@ import tech.doshikawa.carerecord.domain.entity.UserSession;
 import tech.doshikawa.carerecord.domain.repository.UserSessionRepository;
 import tech.doshikawa.carerecord.domain.type.InputPhase;
 import tech.doshikawa.carerecord.domain.type.JsonData;
+import tech.doshikawa.carerecord.domain.type.UserValidationConstraints;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -66,6 +67,7 @@ public class LineWebhookDispatcherService {
         if ("記録".equals(text) || "開始".equals(text)) {
             startNewSession(userId, session);
             
+            //開始時メッセージ
             // 例外による反乱を防ぐため、第三引数に「デフォルトのメッセージ」を設定して強固な防壁を築く
             String fallbackMessage = "日々の介護、誠にお疲れ様です。\n記録したい症状のカテゴリを選択してください。";
             String introText = messageSource.getMessage("reply.intro.category", null, fallbackMessage, Locale.JAPAN);
@@ -83,14 +85,16 @@ public class LineWebhookDispatcherService {
         //現在どのフェーズ（InputPhase）か取得
         InputPhase phase = session.getCurrentPhase();
 
-        //textはLINEから送られたテキストなので、分岐追加する際は以下の感じで分岐処理を書く
-        //if (phase == InputPhase.WAITING_FOR_WHO && text.startsWith("who=")) {
-
         //メモ入力状態からテキストが入力された
         if (phase == InputPhase.WAITING_FOR_MEMO_TEXT) {
             log.info("Executing SelecthandleTextMessage_WAITING_FOR_MEMO_TEXT: {}", text);
             
             if (text != null) {
+                //メモが入力済みで、文字数制限を超える場合は再度入力
+                if (text.length() > UserValidationConstraints.MAX_COMMENT_LENGTH){
+                    lineMessageService.replyTextByCode(replyToken, "validation.carerecord.memo.size", UserValidationConstraints.MAX_COMMENT_LENGTH_STR);
+                    return;
+                }
                 sessionHelper.updateDraft(session, draft -> {
                     draft.setMemo(text);
                 });
@@ -169,7 +173,7 @@ public class LineWebhookDispatcherService {
 
         // 将軍に処理を委譲
         handler.handle(event.replyToken(), session, params);
-        //Usersessionに保存_AIじゃなくてわいが書いた
+        //Usersessionに保存
         CareRecordDraft draft = getDraft(session);
         saveDraft(session, draft);
         // 戦果の記録

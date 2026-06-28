@@ -36,6 +36,6 @@ public class WantMemoHandler implements PostbackActionHandler {
         session.setCurrentPhase(InputPhase.WAITING_FOR_MEMO_TEXT);
         sessionRepository.save(session);
         
-        lineMessageService.replyText(replyToken, "メモ内容をテキストで入力してください。(1000文字まで)");
+        lineMessageService.replyText(replyToken, "メモ内容をテキストで入力してください。(255文字まで)");
     }
 }

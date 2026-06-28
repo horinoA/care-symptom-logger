@@ -8,7 +8,7 @@
     "contents": [
       {
         "type": "text",
-        "text": "どのくらいかかりましたか？",
+        "text": "症状はどのくらい続きましたか？",
         "weight": "bold",
         "size": "sm",
         "color": "#666666"
