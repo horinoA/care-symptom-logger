@@ -1,0 +1,14 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "postback",
+      "postback": { "data": "action=next_to_date" },
+      "webhookEventId": "event_06_1_next_date",
+      "timestamp": 1625665242221,
+      "source": { "type": "user", "userId": "U_test_user_all" },
+      "replyToken": "dummy_token",
+      "mode": "active"
+    }
+  ]
+}

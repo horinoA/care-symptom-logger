@@ -1,0 +1,14 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "postback",
+      "postback": { "data": "action=select_symptom_category&categoryId=30" },
+      "webhookEventId": "event_02_1_category",
+      "timestamp": 1625665242212,
+      "source": { "type": "user", "userId": "U_test_user_all" },
+      "replyToken": "dummy_token",
+      "mode": "active"
+    }
+  ]
+}

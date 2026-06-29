@@ -1,0 +1,19 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "postback",
+      "postback": {
+        "data": "action=select_who&targetId=202"
+      },
+      "webhookEventId": "event_04_who_001",
+      "timestamp": 1625665242214,
+      "source": {
+        "type": "user",
+        "userId": "U_test_user_e2e_001"
+      },
+      "replyToken": "dummy_reply_token",
+      "mode": "active"
+    }
+  ]
+}

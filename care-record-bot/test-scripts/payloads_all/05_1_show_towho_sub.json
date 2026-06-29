@@ -1,0 +1,14 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "postback",
+      "postback": { "data": "action=show_to_who_sub" },
+      "webhookEventId": "event_05_1_show_towho",
+      "timestamp": 1625665242219,
+      "source": { "type": "user", "userId": "U_test_user_all" },
+      "replyToken": "dummy_token",
+      "mode": "active"
+    }
+  ]
+}

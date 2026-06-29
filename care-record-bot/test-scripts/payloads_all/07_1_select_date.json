@@ -1,0 +1,17 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "postback",
+      "postback": { 
+        "data": "action=select_date",
+        "params": { "date": "2026-06-29" }
+      },
+      "webhookEventId": "event_07_1_date",
+      "timestamp": 1625665242222,
+      "source": { "type": "user", "userId": "U_test_user_all" },
+      "replyToken": "dummy_token",
+      "mode": "active"
+    }
+  ]
+}

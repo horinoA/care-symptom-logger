@@ -1,0 +1,14 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "message",
+      "message": { "type": "text", "id": "msg_002", "text": "テスト用のメモです" },
+      "webhookEventId": "event_10_2_memo_text",
+      "timestamp": 1625665242226,
+      "source": { "type": "user", "userId": "U_test_user_all" },
+      "replyToken": "dummy_token",
+      "mode": "active"
+    }
+  ]
+}

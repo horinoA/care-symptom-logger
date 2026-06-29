@@ -1,0 +1,24 @@
+{
+  "destination": "U_dummy_bot",
+  "events": [
+    {
+      "type": "message",
+      "message": {
+        "type": "text",
+        "id": "14353798921116",
+        "text": "開始"
+      },
+      "webhookEventId": "event_01_start_001",
+      "deliveryContext": {
+        "isRedelivery": false
+      },
+      "timestamp": 1625665242211,
+      "source": {
+        "type": "user",
+        "userId": "U_test_user_e2e_001"
+      },
+      "replyToken": "dummy_reply_token",
+      "mode": "active"
+    }
+  ]
+}

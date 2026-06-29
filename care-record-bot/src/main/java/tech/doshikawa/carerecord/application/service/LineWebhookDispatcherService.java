@@ -120,20 +120,20 @@ public class LineWebhookDispatcherService {
         UserSession session = userSessionRepository.findById(userId).orElse(null);
 
         // 【第一の盾】冪等性のチェック
-        try {
-            eventRepository.save(LineWebhookEvent.builder()
-                .eventId(eventId)
-                .userId(userId)
-                .sessionId(session != null ? session.getSessionId() : null)
-                .eventType("postback")
-                .lineTimestamp(OffsetDateTime.ofInstant(java.time.Instant.ofEpochMilli(event.timestamp()), ZoneId.systemDefault()))
-                .status("PROCESSING")
-                .isNew(true)
-                .build());
-        } catch (DuplicateKeyException e) {
+        if (eventRepository.existsById(eventId)) {
             log.info("既に処理済みのイベントです。無視して200を返します。eventId: {}", eventId);
             return;
         }
+        
+        eventRepository.save(LineWebhookEvent.builder()
+            .eventId(eventId)
+            .userId(userId)
+            .sessionId(session != null ? session.getSessionId() : null)
+            .eventType("postback")
+            .lineTimestamp(OffsetDateTime.ofInstant(java.time.Instant.ofEpochMilli(event.timestamp()), ZoneId.systemDefault()))
+            .status("PROCESSING")
+            .isNew(true)
+            .build());
 
         if (session == null) {
             throw new IllegalStateException("error.session.notfound");

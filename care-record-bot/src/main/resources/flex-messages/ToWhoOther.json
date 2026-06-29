@@ -60,7 +60,7 @@
                 "action": {
                   "type": "postback",
                   "label": "👶 息子・娘",
-                  "data": "action=select_to_who_detail&toWhoId=01",
+                  "data": "action=select_to_who_detail&toWhoId=401",
                   "displayText": "息子・娘"
                 },
                 "color": "#DDEEDC"
