@@ -29,12 +29,6 @@ send_webhook() {
 
 cd "$(dirname "$0")"
 
-echo "🔥 【第一陣】キャンセルと戻る（例外ルート）のテスト"
-send_webhook "payloads_all/01_1_start.json" "Text (初期化)"
-send_webhook "payloads_all/02_1_category.json" "SelectSymptomCategoryHandler"
-send_webhook "payloads_all/02_2_back.json" "BackToCategoryHandler"
-send_webhook "payloads_all/02_3_cancel.json" "CancelRecordHandler"
-
 echo "🔥 【第二陣】カテゴリ40(記憶と言葉)・メモありルート"
 # ※カテゴリ40(記憶と言葉)など困った(30)以外は、WhoのあとにToWhoが無く、直接メモ有無に飛びます
 send_webhook "payloads_all/01_1_start.json" "Text (初期化再)"

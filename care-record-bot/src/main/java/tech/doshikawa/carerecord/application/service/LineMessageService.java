@@ -73,6 +73,10 @@ public class LineMessageService {
     }
 
     private void reply(String replyToken, List<Message> messages) {
+        if ("dummy_token".equals(replyToken)) {
+            log.info("テスト用トークンのため、LINE APIへの送信をスキップします。送信予定のメッセージ数: {}", messages.size());
+            return;
+        }
         try {
             messagingApiClient.replyMessage(new ReplyMessageRequest(replyToken, messages, false)).get();
         } catch (Exception e) {
