@@ -39,7 +39,7 @@
 1. **@Table のスキーマ指定**: `@Table("schema.table_name")` と書くと「schema.table_nameという1つの文字列のテーブル」として扱われ `Relation does not exist` エラーになる。必ず `@Table(name = "table_name", schema = "schema")` と名前とスキーマを分離して指定すること。
 2. **Persistable と isNew フラグの罠**: `Persistable` を実装して `@Transient boolean isNew` を持たせる場合、Lombokの `@Builder` で生成される全引数コンストラクタに `isNew` が含まれると、Spring Dataがデータ読み込み時（インスタンス化時）に `MappingException: No property isNew found` を出してクラッシュする。これを回避するため、Entityには必ず `@NoArgsConstructor` と `@AllArgsConstructor` を付与し、Spring Dataに引数なしコンストラクタを使わせること。
 3. **JSONB / TIMESTAMPTZ の自動変換**: Spring Data JDBC は PostgreSQL の `JSONB` や `TIMESTAMPTZ` (`Timestamp`) をJavaのオブジェクト（`OffsetDateTime` 等）へデフォルトで変換できない。必要に応じて `JdbcConfig` の `JdbcCustomConversions` に `Converter` を登録すること。
-3. 亡霊化（トランザクション・ロールバック）の完全祓い
+4. **亡霊化（トランザクション・ロールバック）の完全祓い**
   * LineWebhookEvent  の  isNew  フラグ修正:
   「DBのセッションが進まないのに、LINEの画面だけが進む」という怪奇現象の原因
   を特定。
@@ -48,6 +48,33 @@
   （無かったことに）されていた問題を、 isNew のデフォルト値を  false 
   に変更することで完全に解決しました。同時に  createdAt/updatedAt  の Not-
   Null 制約違反も修正済みです。
+5. **【超・重要】@Transactional内での例外CatchとUnexpectedRollbackExceptionの極悪罠**
+  * Springの `@Transactional` が付与されたメソッド内で、Spring Data JDBCの `save()` 等を実行して `DuplicateKeyException` などの **RuntimeExceptionが発生した場合、その例外を `try-catch` で握りつぶして正常に `return` しても、Spring AOPは裏でトランザクションを「Rollback-only（汚染状態）」とマーキングします**。
+  * その結果、メソッド終了時のコミット処理で **`UnexpectedRollbackException` が発生し、問答無用で HTTP 500 エラー（サーバクラッシュ）** となってしまいます。
+  * **絶対ルール**: `try-catch` でDBの例外を制御しようとしてはいけません。必ず `existsById()` 等を用いて **「事前に存在確認し、そもそも例外を発生させない」** 防御的プログラミングを徹底してください。
+  * **❌ NGなコード例（罠に掛かり全滅するコード）**:
+    ```java
+    @Transactional
+    public void handlePostback(PostbackEvent event) {
+        try {
+            repository.save(entity); // ここでキー重複エラーが出るとトランザクションが死ぬ
+        } catch (DuplicateKeyException e) {
+            log.info("処理済みです");
+            return; // catchして平和に終わったつもりでも、後で 500エラーが大爆発する！
+        }
+    }
+    ```
+  * **✅ 完璧なコード例（我が軍の無傷の陣形）**:
+    ```java
+    @Transactional
+    public void handlePostback(PostbackEvent event) {
+        if (repository.existsById(entity.getId())) {
+            log.info("処理済みです");
+            return; // 事前に検知して平和的に離脱する！例外は一滴も出させない！
+        }
+        repository.save(entity);
+    }
+    ```
 
 ## 4. エージェントへの指示 (Instructions for AI)
 * コード作成時必ず先にコードを表示し、確認処理を行うこと。いきなりファイルやディレクトリ作成は行わないこと
@@ -63,10 +90,10 @@
 
 | リソース (URI) | HTTPメソッド | 概要（処理内容） | アクター / 用途 |
 | :--- | :---: | :--- | :--- |
-| `/api/v1/webhook/line` | `POST` | **LINEからのイベント受信** | LINEプラットフォーム |
+| `/api/v1/webhook/line` | `POST` | **LINEからのイベント受信_実装** | LINEプラットフォーム |
 | `/api/v1/records` | `GET` | **介護記録ファクトの一覧取得** | 管理画面 / レポート出力 |
 | `/api/v1/records/{recordId}` | `GET` | **特定の介護記録の詳細取得** | 管理画面 / 詳細確認 |
-| `/api/v1/records/export` | `GET` | **記録のデータエクスポート** | 外部提出用 |
+| `/api/v1/records/export` | `GET` | **記録のデータエクスポート_実装** | 外部提出用 |
 | `/api/v1/symptoms` | `GET` | **症状マスタ一覧の取得** | UI描画用 |
 | `/api/v1/sessions/{userId}` | `DELETE` | **セッションの強制リセット**<br>※本システムで唯一許可されるDELETEメソッド | デバッグ / 状態初期化 |
 
@@ -80,8 +107,9 @@
 * **Logging**: バッチ処理の開始・終了・エラーは必ずログ出力（`sys.job_logs` への保存も考慮）。
 
 ## 7. 特殊トリガーコマンド
+ **「その計略にて進軍せよ」** というまでコードの作成は禁止とする。
 私がチャットの最後に **「本日の戦果を奏上せよ」** と言った場合、以下の「2段階プロセス」を脳内で実行し、後からの保守で本当に役に立つMarkdown形式の「詳細設計書」を出力してください。
-  ### 「今日の作業出して」が呼ばれた際の出力フォーマット
+  ### 「本日の戦果を奏上せよ」が呼ばれた際の出力フォーマット
   不要な前置きは一切省き、以下のMarkdown構成で出力すること。
 
   ### 1. 本日の実装・修正の概要
@@ -120,58 +148,30 @@
 【応答例】
 「おお、我が君！見事なる計略（要件定義）にございます。しかし恐れながら申し上げます、State管理の辺境にて愚かなる反乱分子（エラー）が蜂起した模様。直ちにわたくしめが粛清（デバッグ）し、殿下の足元に平穏なるコードを献上いたしましょう！」
 
+## 準備
+「背景  #F58220  × 文字色 黒（ #333333  や  #111111 ）」でリッチメニュー画像作る
 
 ## 作業履歴 
-### (2026/06/25)
-1. とりま症状のサブカテゴリボタン背景色#bef7c0
-### (2026/06/24)
-1. CareRecordDraft.java
-  * クラスの末尾に、殿下と考案した共通判定メソッド  @JsonIgnore public boolean hasTroubleSymptom()  を追加いたしました。
-2. SelectWhoHandler.java
-  * 長ったらしい判定文や例外スローを全て削除し、 boolean hasTarget =draft.hasTroubleSymptom(); を呼び出すだけのエレガントな姿へとスリム化いたしました。
-3. SelectWhoDetailHandler.java
-  * こちらにも同様のロジックを移植し、 hasTroubleSymptom() の結果に応じて  ToWho.json  か  MemoYN.json へ分岐するように共通化いたしました。
-4. LineMessageService.java  に新兵器を配備
-  LINEでは「返信（reply）」の権利は1回のリクエストにつき1度しか使えませんが、**「一度の返信で最大5つの吹き出しを同時に送る」**ことが可能です。そこで、テキストとFlexMessageを同時に投下する新メソッド  replyTextAndFlexMessageを追加いたしました。
-5. SelectDateHandler.java  の改修
-  日付が選ばれた際、先ほどの新兵器を用いて、「【日付】 2024-06-24」というテキストメッセージと、次の「時間帯選択」のFlexMessageをセットで返信するように修正いたしました！
 
-### (2026/06/23)
-* **LINE Flex Message 送信時の ObjectMapper エラー修正**
-  * `LineMessageService` にて `FlexContainer` をパースする際、LINE固有のポリモーフィック型 (`type: text` 等) で `UnrecognizedPropertyException` が発生する問題を解決。`ObjectMapper` に `FAIL_ON_UNKNOWN_PROPERTIES = false` を設定して対処。
-* **対話ステートマシン（セッション）の重複エラー（DuplicateKeyException）を修正**
-  * 既存のセッションが存在する状態で「開始」や「記録」を受信した際、`UserSession` を常に新規作成(`isNew=true`)してINSERTしようとしPK違反が発生する問題を解消。既存セッションがある場合は適切に状態を更新（UPDATE）するよう修正。
-  * フェーズ（状態）を問わず、「開始」や「記録」のテキスト入力で強制的に初期フェーズ（WAITING_FOR_SYMPTOM_CATEGORY）へリセット・再開できるリカバリー機構を実装。
-  * 軍師  UserSessionHelper  の新設:
-  散逸していたセッションのJSON変換処理を共通化。
-* **第一の盾（冪等性チェック）における Not-Null 制約違反を修正**
-  * `LineWebhookEvent` エンティティの `createdAt` および `updatedAt` フィールドに `@Builder.Default` を付与し、Builderでの生成時にもデフォルトの現在時刻が設定されるよう改修。これにより `eventRepository.save()` での `DataIntegrityViolationException` を解決。
-* bootRun  起動エラーの修正: アプリ起動時にSpring BootのDIコンテナが「
-  ObjectMapper  が見つからない」とストライキ（ UnsatisfiedDependencyException
-  ）を起こしたため、軍師  UserSessionHelper  が自前で  ObjectMapper 
-  を調達して初期化するよう修正し、無事にTomcatを起動させました。
+### 1.3 本日の実装・修正の概要（CSV出力のLINE連携編）
+- **目的**: LINEリッチメニューからの一撃（操作）で、対象ユーザーの過去3ヶ月分の介護記録CSVダウンロードURLを動的生成し、トークルームに返却する機能（`action=request_csv` のPostback処理）の追加。および、CSVエクスポートAPIのE2E自動テストスクリプトの配備。
+- **影響範囲**:
+  - `care-record-bot/src/main/java/tech/doshikawa/carerecord/application/service/handler/RequestCsvHandler.java` (新規配備)
+  - `care-record-bot/src/main/java/tech/doshikawa/carerecord/application/service/LineWebhookDispatcherService.java` (修正)
+  - `test-scripts/test-csv-export.sh` (新規配備)
+  - `.gitignore` (テスト用CSVの無視設定を追加)
 
-### (2026/06/20)
-* **Java側のPostbackルーティング（Handlerパターン）の実装完了**
-  * `LineWebhookDispatcherService` において、Postbackイベントの `action` パラメータに基づくルーティングを実装。
-  * `PostbackActionHandler` インターフェースを定義し、19のアクションに応じたクラスへ処理を委譲するHandlerパターンを構築。
-  * 各Handlerにて `getAllowedPhases()` による不正な状態遷移（過去のボタンの二度押し等）の防御を実装。
-  * `LineWebhookEventRepository` を用いた `eventId` の記録による冪等性（重複リクエスト防止）を担保。
-* **Flex Message 返信処理のハンドラーへの組み込み完了**
-  * 既存の猛将 `LineMessageService` を活用し、`SelectSymptomCategoryHandler` 等の各ハンドラーにて、ユーザーの選択に応じたFlex Message（`Sympton_Trouble.json` など）を動的に返し、次のフェーズへ誘導する処理を実装。
+#### 最初の方針（DDDの責領・違反チェック）との答え合わせ
+- **設計意図**:
+  - **Application層の防衛**: 今回追加した機能は `handleTextMessage` に無理な分岐を足すのではなく、新たに `RequestCsvHandler` を配備することで、Postbackのステートマシン（CommandHandlerパターン）の美しい陣形を崩すことなくユースケースを実装しました。
+  - **Presentation層の流用**: 既存の `CareRecordExportController` が持つ「CSVストリームを返す」という責務には一切触れず、単に「そこへ繋がるURLをユーザーに案内する」だけの処理としたため、責務の分離が完璧に保たれています。
+- **クリーンさの証明**:
+  - JPA・Hibernateなどのアノテーションは一切混入しておりません。
+  - UPDATE/DELETEなどの禁じられたCRUD処理を新設することなく、完全に読み取り（生成）専用の処理として完遂いたしました。
 
-### (2026/06/20)
-* ngrokでポートを開放した後、LINEのトーク画面で 「開始」 や「記録」 など、適当な文字をお打ち込みいただくだけで、第一のFlexMessageが発動いたします。(LineWebhookDispatcherService修正)
-### (2026/04/14)
-* **CareRecord保存ロジック・セッション管理の実装とテスト完了**
-  * Spring Data JDBCの `JdbcCustomConversions` を用いて、PostgreSQLの `JSONB` カラム（セッションの `temp_data`）および `TIMESTAMPTZ` カラム（`createdAt` 等の `OffsetDateTime`）の自動変換コンバーターを実装し、エラーを解消。
-  * 全てのEntityの `@Table` アノテーションにおいて、`name` と `schema` を明示的に分離して指定するよう修正し、Relation Not Found エラーを解消。
-  * `UserSession`, `CareRecord`, `CareRecordDetail` Entityに `@NoArgsConstructor` を付与し、Spring Data JDBCによるインスタンス化時の `isNew` プロパティバインディングエラーを解決。
-  * ダミーWebhookスクリプト（`test-webhook.sh`）を用いた結合テストにて、ステートマシンの遷移から最終的な `care_records` / `care_record_details` への一括INSERTまで完走することを確認。
-
-## 次回作業予定
-1. **バリデーションとエラーハンドリングの強化**
-    * 入力される日付フォーマットの間違いや、存在しないマスターID（対象者・症状など）が入力された場合の例外ハンドリングを追加し、LINE側に分かりやすいエラーメッセージを返す。
-    * 全ての入力完了時、登録された内容を整形してLINE側に「登録完了メッセージ（Flex Messageやテキスト）」として返信する。
-2. **参照系API（GET /api/v1/records）の実装**
-    * 管理画面やフロントエンド向けに、保存された介護記録の一覧・詳細を取得するControllerとService（読み取り専用）を実装する。
+#### エッジケースと未対応の課題
+- **想定した異常系**:
+  - **セッション未存在でのリッチメニュー操作**: ユーザーがチャットを開始した直後など、セッション（`UserSession`）が構築されていない状態でリッチメニューから `action=request_csv` が呼ばれると、通常は `IllegalStateException` でサーバーがクラッシュします。これを防ぐため、`LineWebhookDispatcherService` にて「CSV要求時のみ、メモリ上にダミーの初期セッションを錬成する」という防壁を築き、例外発生を完全に無効化しました。
+- **技術負債（Technical Debt）**:
+  - **ベースURLの環境依存性**: 現在 `RequestCsvHandler` 内で組み立てるダウンロードURLのドメイン部分は、プロパティ `@Value("${app.api.base-url:http://localhost:8080}")` に依存しています。本番デプロイ時には、必ず本番用のドメインを環境変数等で注入する必要がございます。
+  - **ダミーセッションの幽霊化**: 前述のダミーセッションはDBに保存されないため安全ですが、Webhookの受信履歴（`LineWebhookEvent`）にはその時限的なダミー `sessionId` が記録されます。実害は皆無ですが、将来のデータ分析時に「実体のないセッションID」が紛れ込むことになります。

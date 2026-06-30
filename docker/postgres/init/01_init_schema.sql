@@ -81,6 +81,9 @@ CREATE TABLE event.care_records (
 -- to_who_id の部分インデックス（NULL以外の行だけ高速検索・集計する用）
 CREATE INDEX idx_care_records_to_who ON event.care_records(to_who_id) WHERE to_who_id IS NOT NULL;
 
+-- 検索・エクスポート時の時系列ソート高速化用インデックス
+CREATE INDEX idx_care_records_user_onset ON event.care_records(user_id, onset_at ASC);
+
 -- 介護記録明細（子：症例ループ用）
 CREATE TABLE event.care_record_details (
     id BIGINT PRIMARY KEY, -- 明細用ID (Snowflake or BIGSERIAL想定)

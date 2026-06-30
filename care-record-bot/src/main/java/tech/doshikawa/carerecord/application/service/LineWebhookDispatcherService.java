@@ -135,16 +135,28 @@ public class LineWebhookDispatcherService {
             .isNew(true)
             .build());
 
-        if (session == null) {
-            throw new IllegalStateException("error.session.notfound");
-        }
-
         String data = event.postback().data();
         Map<String, String> params = parsePostbackData(data);
         if (event.postback().params() != null) {
             params.putAll(event.postback().params());
         }
         String action = params.get("action");
+
+        if (session == null) {
+            if ("request_csv".equals(action)) {
+                log.info("セッションが存在しませんが、CSV出力要求のため一時的なダミーセッションを作成します");
+                tech.doshikawa.carerecord.application.dto.CareRecordDraft draft = new tech.doshikawa.carerecord.application.dto.CareRecordDraft();
+                session = UserSession.builder()
+                        .userId(userId)
+                        .sessionId(UUID.randomUUID())
+                        .currentPhase(tech.doshikawa.carerecord.domain.type.InputPhase.WAITING_FOR_SYMPTOM_CATEGORY)
+                        .tempData(tech.doshikawa.carerecord.domain.type.JsonData.of(toJson(draft)))
+                        .isNew(true)
+                        .build();
+            } else {
+                throw new IllegalStateException("error.session.notfound");
+            }
+        }
 
         if (action == null) {
             log.warn("actionが指定されていません: {}", data);

@@ -55,3 +55,6 @@ bin/
 
 ### VS Code ###
 .vscode/
+
+# テスト出力などのCSVファイルを無視
+*.csv
