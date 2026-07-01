@@ -151,9 +151,109 @@
 ## 準備
 「背景  #F58220  × 文字色 黒（ #333333  や  #111111 ）」でリッチメニュー画像作る
 
-## 作業履歴 
+## 作業予定
+過去１ヶ月の症状履歴をLINEチャット画面に表示する機能。医者やケアマネに、対面で最近の様子をパッと伝える時ボタン１個で抽出。リッチメッセージ用に、テキストで「表示」と入力すると、本日から1ヶ月前までの発症期間にて
+* データ抽出 (SQL): DBから「該当ユーザーの直近30日分」を日付降順で取得します。
+* JSONマッピング: 取得したデータを、LINE Flex MessageのJSON構造へ変換します。
+  * Bubble単位: 「最近の記録リスト」としてbubbleのcontentsに配列としてpushしていきます。
+  * Flex Message、Jsonのイメージ
+  ヘッダー: [期間: 6/1 - 6/30]
+  ボディ:
+  { 日付 }{ 持続時間帯} { 症状カテゴリー } { 症状 }{ メモ }
+  例: 6/30_夜・深夜 ２時間程度 [困った] 徘徊する。夜間2回。
+* Flex Message送出: 作成したJSONをLINE Messaging API経由で返信します。
+* データモデルsql
+```SQL
+SELECT
+        CONCAT(TO_CHAR(r.onset_at AT TIME ZONE 'Asia/Tokyo', 'YYYY-MM-DD') ,
+        '_'
+    -- コードではなく日本語
+  , CASE r.timezone
+    WHEN 'MORNING' THEN '朝'
+    WHEN 'NOON' THEN '昼'
+    WHEN 'EVENING' THEN '夕方'
+    WHEN 'NIGHT' THEN '夜・深夜'
+  ELSE '発症時間帯未入力'				   
+    END
+    ) AS onset_timezone
+        , CASE r.duration 
+    WHEN 'UP_TO_30_MIN' THEN '30分まで'
+    WHEN 'AROUND_2_HOURS' THEN '２時間程度'
+    WHEN 'HALF_DAY' THEN '半日'
+    WHEN 'OVER_1_DAY' THEN '１日以上'
+  ELSE '持続時間未入力'				   
+    END			  
+  AS duration
+        , p1.relationship AS target_relationship
+        , STRING_AGG(sc.symptom_category_name,',') AS symptom_category_name
+        , STRING_AGG(sy.symptom_name,',') AS symptom_name
+        , r.memo AS memo
+      FROM event.care_records r
+      INNER JOIN event.care_record_details d 
+        ON r.id = d.care_records_id
+      INNER JOIN core.symptom_name sy 
+        ON sy.id = d.symptom_id
+      INNER JOIN core.symptom_category_name sc 
+        ON sc.id = sy.symptom_category_id
+      INNER JOIN core.people_care p1 
+        ON p1.id = r.target_id
+      LEFT JOIN core.people_care p2 
+        ON p2.id = r.to_who_id
+      WHERE
+        r.user_id = 'U4929159209266936888ec0c6438c8153'
+        AND r.is_delete = FALSE
+        AND r.onset_at >= '2026-06-01'
+        AND r.onset_at <= '2026-06-30'
+GROUP BY r.onset_at,r.timezone,r.duration ,p1.relationship,r.memo
+-- 直近の症例がわかるよう降順
+ORDER BY r.onset_at DESC
+```
 
-### 1.3 本日の実装・修正の概要（CSV出力のLINE連携編）
+
+
+## 作業履歴 
+### 1. 本日の実装・修正の概要(2026/07/01)
+  • 目的: LINE Official Account
+  Managerのリッチメニュー制限（Postback不可、テキスト送信のみ）を突破するため
+  、テキストメッセージ「ダウンロード」を合図にCSVエクスポート機能（
+  RequestCsvHandler
+  ）を出撃させる機能追加。さらに、次なる機能拡張を見据えた「ダミーセッション
+  錬成」と「ハンドラー呼び出し」の共通メソッド化（魔法陣の配備）。
+  • 影響範囲:
+      •  care-record-
+      bot/src/main/java/tech/doshikawa/carerecord/application/service/LineWeb
+      hookDispatcherService.java 
+  ### 2. 最初の方針（DDDの責領・違反チェック）との答え合わせ
+  • 設計意図:  LineWebhookDispatcherService
+  （Application層の入口）にはテキスト解析とルーティングの責務のみを負わせ、UR
+  L生成などの具体的なロジックは一切記述しませんでした。処理は既存の 
+  RequestCsvHandler 
+  に委譲することで、CommandHandlerパターンの美しい陣形を崩すことなく、完璧な
+  責務の分離を維持しております。
+  • クリーンさの証明:
+  今回の進軍において、JPA・Hibernate等の禁じられたアノテーションは一滴も混入
+  しておりません。また、データのUPDATE/DELETEといった規約違反のCRUD操作を新設
+  することなく、純粋な参照とルーティングのみで完遂いたしました。
+
+  ### 3. エッジケースと未対応の課題
+
+  • 想定した異常系:
+      • セッション未存在でのリッチメニュー操作:
+      過去に一度もやり取りのないユーザーが、いきなり「ダウンロード」とテキス
+      トを送信してきた場合、通常はセッションが見つからずクラッシュします。こ
+      れを防ぐため、DBに保存しない「一時的なダミーセッション」をメモリ上に錬
+      成する防壁を配備し、例外（反乱）の発生を完全に無効化しました。
+  • 技術負債（Technical Debt）:
+      • ダミーセッションIDのイベントログ混入: このダミーセッションはDBの
+      user_sessions 
+      テーブルには永続化されませんが、今後テキスト以外のWebhookイベント（Post
+      back等）でこの共通メソッドが利用された際、イベント履歴（
+      LineWebhookEvent
+      ）に「実体のないUUID」が記録されます。システムへの実害は皆無ですが、将
+      来のデータ分析時に「幽霊セッションID」が紛れ込むノイズとなる余地が残さ
+      れております。
+
+### 1.3 本日の実装・修正の概要（CSV出力のLINE連携編2026/06/30）
 - **目的**: LINEリッチメニューからの一撃（操作）で、対象ユーザーの過去3ヶ月分の介護記録CSVダウンロードURLを動的生成し、トークルームに返却する機能（`action=request_csv` のPostback処理）の追加。および、CSVエクスポートAPIのE2E自動テストスクリプトの配備。
 - **影響範囲**:
   - `care-record-bot/src/main/java/tech/doshikawa/carerecord/application/service/handler/RequestCsvHandler.java` (新規配備)

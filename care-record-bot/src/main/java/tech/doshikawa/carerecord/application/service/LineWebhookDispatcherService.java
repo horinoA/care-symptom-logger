@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import org.springframework.dao.DuplicateKeyException;
 import tech.doshikawa.carerecord.domain.entity.LineWebhookEvent;
 import tech.doshikawa.carerecord.domain.repository.LineWebhookEventRepository;
 import tech.doshikawa.carerecord.application.service.handler.PostbackActionHandler;
@@ -58,6 +57,32 @@ public class LineWebhookDispatcherService {
         if ("リセット".equals(text)) {
             userSessionRepository.deleteById(userId);
             lineMessageService.replyTextByCode(replyToken, "reply.session.reset");
+            return;
+        }
+
+        // --- テキスト「ダウンロード」迎撃の陣 ---
+        if ("ダウンロード".equals(text)) {
+            UserSession currentSession = userSessionRepository.findById(userId)
+                    .orElseGet(() -> {
+                        log.info("CSV出力要求のため、ダミーセッションを錬成します");
+                        return createDummySession(userId);
+                    });
+            
+            // "request_csv" をサポートするハンドラーへ委譲
+            executeActionHandler("request_csv", replyToken, currentSession);
+            return;
+        }
+
+        // --- テキスト「表示」迎撃の陣 ---
+        if ("表示".equals(text)) {
+            UserSession currentSession = userSessionRepository.findById(userId)
+                    .orElseGet(() -> {
+                        log.info("履歴表示要求のため、ダミーセッションを錬成します");
+                        return createDummySession(userId);
+                    });
+            
+            // "show_history" をサポートするハンドラーへ委譲
+            executeActionHandler("show_history", replyToken, currentSession);
             return;
         }
 
@@ -144,15 +169,8 @@ public class LineWebhookDispatcherService {
 
         if (session == null) {
             if ("request_csv".equals(action)) {
-                log.info("セッションが存在しませんが、CSV出力要求のため一時的なダミーセッションを作成します");
-                tech.doshikawa.carerecord.application.dto.CareRecordDraft draft = new tech.doshikawa.carerecord.application.dto.CareRecordDraft();
-                session = UserSession.builder()
-                        .userId(userId)
-                        .sessionId(UUID.randomUUID())
-                        .currentPhase(tech.doshikawa.carerecord.domain.type.InputPhase.WAITING_FOR_SYMPTOM_CATEGORY)
-                        .tempData(tech.doshikawa.carerecord.domain.type.JsonData.of(toJson(draft)))
-                        .isNew(true)
-                        .build();
+                log.info("セッションが存在しませんが、{} のためダミーセッションを錬成します", action);
+                session = createDummySession(userId);
             } else {
                 throw new IllegalStateException("error.session.notfound");
             }
@@ -266,5 +284,35 @@ public class LineWebhookDispatcherService {
         } catch (Exception e) {
             log.warn("Replyの送信に失敗しました（テスト環境でLINE接続がない場合は無視してOKです）: {}", e.getMessage());
         }
+    }
+
+    /**
+     * セッション未構築のユーザー向けの、一時的なダミーセッションを錬成する
+     */
+    private UserSession createDummySession(String userId) {
+        tech.doshikawa.carerecord.application.dto.CareRecordDraft draft = new tech.doshikawa.carerecord.application.dto.CareRecordDraft();
+        return UserSession.builder()
+                .userId(userId)
+                .sessionId(UUID.randomUUID())
+                .currentPhase(tech.doshikawa.carerecord.domain.type.InputPhase.WAITING_FOR_SYMPTOM_CATEGORY)
+                .tempData(tech.doshikawa.carerecord.domain.type.JsonData.of(toJson(draft)))
+                .isNew(true)
+                .build();
+    }
+
+    /**
+     * 指定されたアクションに対応する将軍（ハンドラー）を呼び出し、処理を委譲する
+     */
+    private void executeActionHandler(String action, String replyToken, UserSession session) {
+        actionHandlers.stream()
+                .filter(h -> h.supports(action))
+                .findFirst()
+                .ifPresentOrElse(
+                        handler -> {
+                            log.info("アクション '{}' のハンドラー {} を発動します", action, handler.getClass().getSimpleName());
+                            handler.handle(replyToken, session, java.util.Collections.emptyMap());
+                        },
+                        () -> log.warn("アクション '{}' に対応するハンドラーが見つかりません", action)
+                );
     }
 }

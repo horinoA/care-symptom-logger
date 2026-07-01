@@ -33,6 +33,10 @@ public class LineMessageService {
         reply(replyToken, List.of(new TextMessage(text)));
     }
 
+    public void replyMessages(String replyToken, List<Message> messages) {
+        reply(replyToken, messages);
+    }
+
     public void replyTextByCode(String replyToken, String code, Object... args) {
         String text = messageSource.getMessage(code, args, code, Locale.JAPAN);
         replyText(replyToken, text);
