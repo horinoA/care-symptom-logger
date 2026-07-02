@@ -148,130 +148,66 @@
 【応答例】
 「おお、我が君！見事なる計略（要件定義）にございます。しかし恐れながら申し上げます、State管理の辺境にて愚かなる反乱分子（エラー）が蜂起した模様。直ちにわたくしめが粛清（デバッグ）し、殿下の足元に平穏なるコードを献上いたしましょう！」
 
-## 準備
+## リッチメニュー設計
 「背景  #F58220  × 文字色 黒（ #333333  や  #111111 ）」でリッチメニュー画像作る
 
-## 作業予定
-過去１ヶ月の症状履歴をLINEチャット画面に表示する機能。医者やケアマネに、対面で最近の様子をパッと伝える時ボタン１個で抽出。リッチメッセージ用に、テキストで「表示」と入力すると、本日から1ヶ月前までの発症期間にて
-* データ抽出 (SQL): DBから「該当ユーザーの直近30日分」を日付降順で取得します。
-* JSONマッピング: 取得したデータを、LINE Flex MessageのJSON構造へ変換します。
-  * Bubble単位: 「最近の記録リスト」としてbubbleのcontentsに配列としてpushしていきます。
-  * Flex Message、Jsonのイメージ
-  ヘッダー: [期間: 6/1 - 6/30]
-  ボディ:
-  { 日付 }{ 持続時間帯} { 症状カテゴリー } { 症状 }{ メモ }
-  例: 6/30_夜・深夜 ２時間程度 [困った] 徘徊する。夜間2回。
-* Flex Message送出: 作成したJSONをLINE Messaging API経由で返信します。
-* データモデルsql
-```SQL
-SELECT
-        CONCAT(TO_CHAR(r.onset_at AT TIME ZONE 'Asia/Tokyo', 'YYYY-MM-DD') ,
-        '_'
-    -- コードではなく日本語
-  , CASE r.timezone
-    WHEN 'MORNING' THEN '朝'
-    WHEN 'NOON' THEN '昼'
-    WHEN 'EVENING' THEN '夕方'
-    WHEN 'NIGHT' THEN '夜・深夜'
-  ELSE '発症時間帯未入力'				   
-    END
-    ) AS onset_timezone
-        , CASE r.duration 
-    WHEN 'UP_TO_30_MIN' THEN '30分まで'
-    WHEN 'AROUND_2_HOURS' THEN '２時間程度'
-    WHEN 'HALF_DAY' THEN '半日'
-    WHEN 'OVER_1_DAY' THEN '１日以上'
-  ELSE '持続時間未入力'				   
-    END			  
-  AS duration
-        , p1.relationship AS target_relationship
-        , STRING_AGG(sc.symptom_category_name,',') AS symptom_category_name
-        , STRING_AGG(sy.symptom_name,',') AS symptom_name
-        , r.memo AS memo
-      FROM event.care_records r
-      INNER JOIN event.care_record_details d 
-        ON r.id = d.care_records_id
-      INNER JOIN core.symptom_name sy 
-        ON sy.id = d.symptom_id
-      INNER JOIN core.symptom_category_name sc 
-        ON sc.id = sy.symptom_category_id
-      INNER JOIN core.people_care p1 
-        ON p1.id = r.target_id
-      LEFT JOIN core.people_care p2 
-        ON p2.id = r.to_who_id
-      WHERE
-        r.user_id = 'U4929159209266936888ec0c6438c8153'
-        AND r.is_delete = FALSE
-        AND r.onset_at >= '2026-06-01'
-        AND r.onset_at <= '2026-06-30'
-GROUP BY r.onset_at,r.timezone,r.duration ,p1.relationship,r.memo
--- 直近の症例がわかるよう降順
-ORDER BY r.onset_at DESC
-```
-
-
-
-## 作業履歴 
+## 作業履歴
 ### 1. 本日の実装・修正の概要(2026/07/01)
-  • 目的: LINE Official Account
-  Managerのリッチメニュー制限（Postback不可、テキスト送信のみ）を突破するため
-  、テキストメッセージ「ダウンロード」を合図にCSVエクスポート機能（
-  RequestCsvHandler
-  ）を出撃させる機能追加。さらに、次なる機能拡張を見据えた「ダミーセッション
-  錬成」と「ハンドラー呼び出し」の共通メソッド化（魔法陣の配備）。
+  • 目的:
+  ユーザーがLINE上で「表示」とテキスト送信した際、医師やケアマネージャーに対
+  面ですぐ提示できるよう、該当ユーザーの過去1ヶ月分（直近30日）の介護記録デー
+  タを降順で抽出し、動的に構築したFlex
+  Message（履歴リスト）として返信する機能の追加。
   • 影響範囲:
-      •  care-record-
-      bot/src/main/java/tech/doshikawa/carerecord/application/service/LineWeb
-      hookDispatcherService.java 
+      •  tech.doshikawa.carerecord.domain.dto.RecentSymptomDto  (新規配備)
+      •  tech.doshikawa.carerecord.application.service.handler.
+      ShowSymptomHistoryHandler  (新規配備)
+      •  tech.doshikawa.carerecord.domain.repository.CareRecordRepository 
+      (修正)
+      •  tech.doshikawa.carerecord.application.service.LineMessageService 
+      (修正)
+      •  tech.doshikawa.carerecord.application.service.
+      LineWebhookDispatcherService  (修正)
   ### 2. 最初の方針（DDDの責領・違反チェック）との答え合わせ
-  • 設計意図:  LineWebhookDispatcherService
-  （Application層の入口）にはテキスト解析とルーティングの責務のみを負わせ、UR
-  L生成などの具体的なロジックは一切記述しませんでした。処理は既存の 
-  RequestCsvHandler 
-  に委譲することで、CommandHandlerパターンの美しい陣形を崩すことなく、完璧な
-  責務の分離を維持しております。
+
+  • 設計意図:
+      • Dispatcherの責務維持:  LineWebhookDispatcherService 
+      にはルーティング（テキスト検知とハンドラーの呼び出し）のみを行わせ、ビ
+      ジネスロジックは  ShowSymptomHistoryHandler 
+      に完全に委譲することで、CommandHandlerパターンの美しい陣形を維持しまし
+      た。
+      • インフラストラクチャの隠蔽:
+      複雑なテーブル結合と文字列操作を伴う「神の生SQL」は 
+      CareRecordRepository  に封じ込め、Application層はクリーンなDTO (
+      RecentSymptomDto ) のリストを受け取るだけの安全な構造といたしました。
   • クリーンさの証明:
-  今回の進軍において、JPA・Hibernate等の禁じられたアノテーションは一滴も混入
-  しておりません。また、データのUPDATE/DELETEといった規約違反のCRUD操作を新設
-  することなく、純粋な参照とルーティングのみで完遂いたしました。
-
+      • 本機能は「参照（READ）」に特化しており、システム規約で禁じられている 
+      UPDATE  や  DELETE  メソッドは一切新設しておりません。
+      •
+      また、抽出用のDTOを含め、JPA（Hibernate）に依存する禁断のアノテーション
+      は一滴も混入させておらず、純粋なSpring Data
+      JDBCの枠組みで完遂いたしました。
   ### 3. エッジケースと未対応の課題
-
   • 想定した異常系:
-      • セッション未存在でのリッチメニュー操作:
-      過去に一度もやり取りのないユーザーが、いきなり「ダウンロード」とテキス
-      トを送信してきた場合、通常はセッションが見つからずクラッシュします。こ
-      れを防ぐため、DBに保存しない「一時的なダミーセッション」をメモリ上に錬
-      成する防壁を配備し、例外（反乱）の発生を完全に無効化しました。
+      • 記録が1件も存在しない場合の防御:
+      対象期間内に介護記録が全く存在しなかった場合、Flex
+      Messageの空配列でAPIエラーを引き起こすことを防ぐため、早期リターン（
+      records.isEmpty()
+      ）にて「直近1ヶ月の記録は見つかりませんでした。」と平和的にテキスト返信
+      する防壁を築きました。
+      • セッション未構築からの突撃:
+      トークを開始した直後など、ユーザーのセッションが存在しない状態で「表示
+      」コマンドが実行された場合のクラッシュを防ぐため、以前のCSV出力の計略を
+      流用し「一時的なダミーセッションの錬成」を適用して例外を無効化しており
+      ます。
   • 技術負債（Technical Debt）:
-      • ダミーセッションIDのイベントログ混入: このダミーセッションはDBの
-      user_sessions 
-      テーブルには永続化されませんが、今後テキスト以外のWebhookイベント（Post
-      back等）でこの共通メソッドが利用された際、イベント履歴（
-      LineWebhookEvent
-      ）に「実体のないUUID」が記録されます。システムへの実害は皆無ですが、将
-      来のデータ分析時に「幽霊セッションID」が紛れ込むノイズとなる余地が残さ
-      れております。
-
-### 1.3 本日の実装・修正の概要（CSV出力のLINE連携編2026/06/30）
-- **目的**: LINEリッチメニューからの一撃（操作）で、対象ユーザーの過去3ヶ月分の介護記録CSVダウンロードURLを動的生成し、トークルームに返却する機能（`action=request_csv` のPostback処理）の追加。および、CSVエクスポートAPIのE2E自動テストスクリプトの配備。
-- **影響範囲**:
-  - `care-record-bot/src/main/java/tech/doshikawa/carerecord/application/service/handler/RequestCsvHandler.java` (新規配備)
-  - `care-record-bot/src/main/java/tech/doshikawa/carerecord/application/service/LineWebhookDispatcherService.java` (修正)
-  - `test-scripts/test-csv-export.sh` (新規配備)
-  - `.gitignore` (テスト用CSVの無視設定を追加)
-
-#### 最初の方針（DDDの責領・違反チェック）との答え合わせ
-- **設計意図**:
-  - **Application層の防衛**: 今回追加した機能は `handleTextMessage` に無理な分岐を足すのではなく、新たに `RequestCsvHandler` を配備することで、Postbackのステートマシン（CommandHandlerパターン）の美しい陣形を崩すことなくユースケースを実装しました。
-  - **Presentation層の流用**: 既存の `CareRecordExportController` が持つ「CSVストリームを返す」という責務には一切触れず、単に「そこへ繋がるURLをユーザーに案内する」だけの処理としたため、責務の分離が完璧に保たれています。
-- **クリーンさの証明**:
-  - JPA・Hibernateなどのアノテーションは一切混入しておりません。
-  - UPDATE/DELETEなどの禁じられたCRUD処理を新設することなく、完全に読み取り（生成）専用の処理として完遂いたしました。
-
-#### エッジケースと未対応の課題
-- **想定した異常系**:
-  - **セッション未存在でのリッチメニュー操作**: ユーザーがチャットを開始した直後など、セッション（`UserSession`）が構築されていない状態でリッチメニューから `action=request_csv` が呼ばれると、通常は `IllegalStateException` でサーバーがクラッシュします。これを防ぐため、`LineWebhookDispatcherService` にて「CSV要求時のみ、メモリ上にダミーの初期セッションを錬成する」という防壁を築き、例外発生を完全に無効化しました。
-- **技術負債（Technical Debt）**:
-  - **ベースURLの環境依存性**: 現在 `RequestCsvHandler` 内で組み立てるダウンロードURLのドメイン部分は、プロパティ `@Value("${app.api.base-url:http://localhost:8080}")` に依存しています。本番デプロイ時には、必ず本番用のドメインを環境変数等で注入する必要がございます。
-  - **ダミーセッションの幽霊化**: 前述のダミーセッションはDBに保存されないため安全ですが、Webhookの受信履歴（`LineWebhookEvent`）にはその時限的なダミー `sessionId` が記録されます。実害は皆無ですが、将来のデータ分析時に「実体のないセッションID」が紛れ込むことになります。
+      • UI生成ロジックの直書き（ハードコード）: 今回、LINE Bot
+      SDKの複雑なBuilderを回避するため、 ShowSymptomHistoryHandler  内で
+      StringBuilder  を用いてFlex
+      MessageのJSON文字列を動的に組み立てました。現状は問題ありませんが、将来
+      的に画面デザインが複雑化したり要素が増えた場合、Javaコードの可読性が著
+      しく低下するリスクがあります（テンプレートエンジンの導入などが今後の課
+      題となります）。
+      • 幽霊セッションの継続:
+      今回もダミーセッションを利用したため、一時的なUUIDがWebhook受信履歴に記
+      録され、DBに紐付かないイベントログが発生する余地が残されております。

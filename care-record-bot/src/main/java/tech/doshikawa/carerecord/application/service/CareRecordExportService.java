@@ -2,6 +2,7 @@ package tech.doshikawa.carerecord.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import tech.doshikawa.carerecord.domain.dto.CareRecordExportDto;
 import tech.doshikawa.carerecord.domain.repository.CareRecordRepository;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 介護記録のCSVエクスポートに関するユースケースを担うアプリケーションサービス
@@ -22,6 +24,7 @@ public class CareRecordExportService {
 
     private final CareRecordRepository careRecordRepository;
     private final CsvGenerator csvGenerator;
+    private final MessageSource messageSource;
 
     /**
      * 指定期間の介護記録を抽出し、CSV形式の文字列を返す
@@ -36,20 +39,23 @@ public class CareRecordExportService {
 
         // 期間の妥当性チェック
         if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("終了日は開始日以降を指定してください。");
+            String errorMsg = messageSource.getMessage("error.export.daterange.invalid", null, Locale.JAPAN);
+            throw new IllegalArgumentException(errorMsg);
         }
         
         // 業務要件：「直近3ヶ月分」のみ出力可能とする
         LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3);
         if (startDate.isBefore(threeMonthsAgo)) {
             log.warn("直近3ヶ月より古いデータが要求されました。 startDate: {}, 制限: {}", startDate, threeMonthsAgo);
-            throw new IllegalArgumentException("エクスポート可能なデータは直近3ヶ月以内のみです。");
+            String errorMsg = messageSource.getMessage("error.export.daterange.too_old", null, Locale.JAPAN);
+            throw new IllegalArgumentException(errorMsg);
         }
         
         // （安全のため、期間自体が3ヶ月を超えていないかもチェック）
         if (startDate.plusMonths(3).isBefore(endDate)) {
             log.warn("指定された期間が3ヶ月を超えています。 startDate: {}, endDate: {}", startDate, endDate);
-            throw new IllegalArgumentException("一度に指定できる期間は最大3ヶ月間です。");
+            String errorMsg = messageSource.getMessage("error.export.daterange.too_long", null, Locale.JAPAN);
+            throw new IllegalArgumentException(errorMsg);
         }
 
         // LocalDate を OffsetDateTime (日本時間) に変換
