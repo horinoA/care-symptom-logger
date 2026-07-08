@@ -99,9 +99,10 @@ public class ShowSymptomHistoryHandler implements PostbackActionHandler {
         for (int i = 0; i < records.size(); i++) {
             RecentSymptomDto record = records.get(i);
             
-            String text = String.format("%s %s [%s] %s。%s",
+            String text = String.format("%s %s %s [%s] %s。%s",
                     record.getOnsetTimezone(),
                     record.getDuration(),
+                    record.getTargetRelationship(),
                     record.getSymptomCategoryName() != null ? record.getSymptomCategoryName() : "カテゴリ不明",
                     record.getSymptomName() != null ? record.getSymptomName() : "症状不明",
                     record.getMemo() != null ? record.getMemo() : "");

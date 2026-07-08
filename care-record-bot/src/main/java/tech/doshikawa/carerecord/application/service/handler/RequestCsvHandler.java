@@ -20,7 +20,7 @@ public class RequestCsvHandler implements PostbackActionHandler {
 
     private final LineMessageService lineMessageService;
 
-    @Value("${app.api.base-url:http://localhost:8080}")
+    @Value("${app.api.base-url:https://care-record-bot.fly.dev}")
     private String baseUrl;
 
     @Override
