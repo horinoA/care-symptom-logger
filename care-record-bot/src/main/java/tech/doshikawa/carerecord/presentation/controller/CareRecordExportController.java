@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 import tech.doshikawa.carerecord.application.service.CareRecordExportService;
+import tech.doshikawa.carerecord.application.service.JwtTokenService;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -25,22 +27,31 @@ import java.time.LocalDate;
 public class CareRecordExportController {
 
     private final CareRecordExportService careRecordExportService;
+    private final JwtTokenService jwtTokenService;
 
     /**
      * 指定期間の介護記録をCSV形式でダウンロードする
      *
-     * @param userId 対象ユーザーのLINEユーザーID（将来的な認証対応も考慮）
+     * @param token 使い捨ての通行符 (JWT)
      * @param startDate 抽出開始日 (yyyy-MM-dd)
      * @param endDate 抽出終了日 (yyyy-MM-dd)
      * @return CSVファイルデータ
      */
     @GetMapping
     public ResponseEntity<byte[]> exportCsv(
-            @RequestParam("userId") String userId,
+            @RequestParam("token") String token,
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         
-        log.info("CSVエクスポート要求を受信しました。userId: {}, startDate: {}, endDate: {}", userId, startDate, endDate);
+        // 1. JWTトークンを検証し、userIdを抽出する
+        String userId = jwtTokenService.verifyAndExtractUserId(token);
+        
+        if (userId == null) {
+            log.warn("無効な通行符によるCSVエクスポート要求を撃退しました。");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        log.info("CSVエクスポート要求を受信・検証成功しました。userId: {}, startDate: {}, endDate: {}", userId, startDate, endDate);
 
         try {
             // アプリケーション層へCSV文字列の生成を委譲

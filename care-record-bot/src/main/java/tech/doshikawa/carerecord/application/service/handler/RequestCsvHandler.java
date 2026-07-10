@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import tech.doshikawa.carerecord.domain.entity.UserSession;
 import tech.doshikawa.carerecord.domain.type.InputPhase;
 import tech.doshikawa.carerecord.application.service.LineMessageService;
+import tech.doshikawa.carerecord.application.service.JwtTokenService;
 
 import java.time.LocalDate;
 import java.util.EnumSet;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class RequestCsvHandler implements PostbackActionHandler {
 
     private final LineMessageService lineMessageService;
+    private final JwtTokenService jwtTokenService;
 
     @Value("${app.api.base-url:https://care-record-bot.fly.dev}")
     private String baseUrl;
@@ -44,11 +46,14 @@ public class RequestCsvHandler implements PostbackActionHandler {
         String startDate = LocalDate.now().minusMonths(3).toString();
         String endDate = LocalDate.now().toString();
         
-        // ダウンロードURLの組み立て
-        String downloadUrl = String.format("%s/api/v1/records/export?userId=%s&startDate=%s&endDate=%s", 
-                baseUrl, userId, startDate, endDate);
+        // JWT暗号密書の発行
+        String token = jwtTokenService.generateCsvDownloadToken(userId);
+        
+        // ダウンロードURLの組み立て (userIdを隠蔽し、tokenを使用)
+        String downloadUrl = String.format("%s/api/v1/records/export?token=%s&startDate=%s&endDate=%s", 
+                baseUrl, token, startDate, endDate);
                 
-        String message = "直近3ヶ月分の記録データが準備できました。\n以下のURLからダウンロードしてください。\n※PCでのダウンロードを推奨します。\n\n" + downloadUrl;
+        String message = "直近3ヶ月分の記録データが準備できました。\n以下のURLからダウンロードしてください。\n（※セキュリティ保護のため、このURLは発行から10分間のみ有効です。）\n\n" + downloadUrl;
         
         lineMessageService.replyText(replyToken, message);
     }

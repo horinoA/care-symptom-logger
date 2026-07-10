@@ -39,6 +39,9 @@ dependencies {
 	// LINE Bot SDK
 	implementation 'com.linecorp.bot:line-bot-spring-boot-handler:8.0.0'
 	implementation 'com.linecorp.bot:line-bot-spring-boot-web:8.0.0'
+	
+	// JWT
+	implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 tasks.named('test') {
