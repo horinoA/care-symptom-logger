@@ -14,6 +14,12 @@
 > * 本Botはポートフォリオおよび実証実験用として稼働しています。個人情報等は入力しないようお願いいたします。
 > * インフラのコスト削減のため、一定時間アクセスがないとデータベースがスリープします。**初回操作時のみ、DB起動のため応答までに10〜30秒ほどかかる場合**があります。
 
+## 開発過程の記事
+Zennにて開発過程を公開しております。順次記事は追加していく予定です。
+[はてぶ1000ブクマの介護記事を書いたSEが学んだ設計思想](https://zenn.dev/horino_a/articles/6d98763c43e3e4)
+[追い詰められた介護者のための画面遷移設計](https://zenn.dev/horino_a/articles/84a9e741a88220)
+[OOM Killerと戦ったちいかわSEがせんべろ（512MB）で討伐した話〜Fly.io + Neon本番デプロイ〜](https://zenn.dev/horino_a/articles/35017b212a13f0)
+
 ## 🛠 使用技術・インフラ構成
 * **Backend:** Java 21 / Spring Boot 4.x / LINE Messaging API (Java SDK)
 * **Database:** Neon (Serverless Postgres)
